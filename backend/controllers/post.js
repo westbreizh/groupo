@@ -32,7 +32,21 @@ exports.newPost = (req, res, next) => {
 
 // Modifier un post. 
 exports.modifyOnePost = (req, res, next) => {
-    db.query(`UPDATE posts SET title = '${req.body.title}', text = '${req.body.texte}' WHERE id = ${req.params.id}`, 
+
+    if (req.body.file) {  // si j'ai un fichier image dans la requete
+        imageUrl = `${req.protocol}://${req.get("host")}/images/${req.body.file.filename}`;  // req.protocol renvoie le http ou https,  req.get ('host') => donne le host de notre serveur (ici localhost 3001 en réel racine de notre serveur) ensuite dossier images et le nom du fichi
+        console.log("je suis la ! ")
+        console.log(imageUrl)
+    }
+    else {
+        imageUrl = req.body.imageUrl; 
+        console.log("je suis ici")
+    }
+
+
+    db.query(`UPDATE posts 
+    SET titre = '${req.body.title}', texte = '${req.body.texte}', image_url = '${imageUrl}' 
+    WHERE id = ${req.params.id[1]}`, 
     (error, result) => {
         if (error) {
             return res.status(400).json({
@@ -42,12 +56,13 @@ exports.modifyOnePost = (req, res, next) => {
         return res.status(200).json({
         message: 'Votre post à été modifié !'
     })});
-  };
+    };
   
 
 // supression d'un post. 
 exports.deleteOnePost = (req, res, next) => {
-  db.query(`DELETE FROM posts WHERE id = ${req.params.id}`, (error, result) => {
+
+  db.query(`DELETE FROM posts WHERE id = ${req.params.id[1]}`, (error, result) => {
       if (error) {
           return res.status(400).json({
               error
@@ -63,7 +78,7 @@ exports.getAllPost = (req, res, next) => {
     db.query('SELECT * FROM posts', (error, result) => {
         if (error) {
             return res.status(400).json({
-                message: 'erreur!'
+                message: 'erreur lors du chargemnt des publications!'
             });
         }
         return res.status(200).json(result);

@@ -1,13 +1,13 @@
 import Button from '@mui/material/Button';
 import { useContext, useState } from 'react';
 import {AuthContext} from '../../Utils/context/index';
-import "./styles.css";
 import CreatePost from '../../components/createPost/CreatePost';
 import PublicationPosts from '../../components/publicationPosts/PublicationPosts' ;
+import "./styles.css";
 
 export default function  Home() {
 
-const  authDatas  = useContext(AuthContext);        //  branchement  sur le contexte global d 'authentification  
+const  authDatas  = useContext(AuthContext);       
 const isConnected = authDatas.connected; 
 const [isCreatePostVisible, setIsCreatePostVisible] = useState(false) ;
 
@@ -18,9 +18,6 @@ if(isConnected)
 
     <div>
         
-
-
-
         { !isCreatePostVisible ?
         
             <Button sx={{bgcolor: '#ec5990', mt:"20px", ml:"40%", fontSize:"22px", textTransform:"none"  }} 
@@ -32,9 +29,13 @@ if(isConnected)
         
             < PublicationPosts />
         
-
     </div>
-
     )
+else
+
+        return (
+            < PublicationPosts />
+        )
+
 }
 

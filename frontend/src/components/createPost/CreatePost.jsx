@@ -37,7 +37,8 @@ export default function  CreatePost(props) {
       } else{
         const result = await response.json()
         setIsCreatePostVisible (! isCreatePostVisible)
-        return result;} 
+        window.location.reload()
+        return result} 
     } 
     catch(err){
       const errorMessage = err.toString();
