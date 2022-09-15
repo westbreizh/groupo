@@ -1,31 +1,32 @@
-import { useForm } from "react-hook-form"           // la logique  d'enregistrement des champs des inputs est asuré par le hook useForm 
+import { useForm } from "react-hook-form"            
 import { useContext} from 'react'
 import {AuthContext} from '../../Utils/context/index'
-
 import { Input, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'; 
 import "./styles.css";
 
 
 export default function  CreatePost(props) {
 
   const {isCreatePostVisible, setIsCreatePostVisible} = props ;
-  const  authDatas  = useContext(AuthContext);        //  branchement  sur le contexte global d 'authentification  
-  const UserId = authDatas.userId;
+  const  authDatas  = useContext(AuthContext); 
+  const userId = authDatas.userId  
+  const toogleEffect = authDatas.toogleEffect  
+  const setToogleEffect = authDatas.setToogleEffect 
   //const Token = authDatas.token;
-  const { register,setError, formState: { errors }, handleSubmit } = useForm({       // useForme nous founit la possibilité d'enregistrer les données, gerer les erreurs, et appeler une fonction callback
+  const { register,setError, formState: { errors }, handleSubmit } = useForm({      
            mode: 'onTouched'});
   
-  
-  const onSubmit = async function (data) {            // logique de l'appel de l'API de creation d'enregistrement du backend et du traitement de la réponse
+
+  const onSubmit = async function (data) {            
     
     try{
       const response = await fetch(`http://localhost:3001/api/posts`, {
         mode: "cors",
         method: "POST",
-        body: JSON.stringify({  id_user: UserId, title: data.title, texte: data.texte, file: data.file[0]}),
+        body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0]}),
         headers: {"Content-Type": "application/json",
                   "Authorization":  "????",
       }})
@@ -37,8 +38,8 @@ export default function  CreatePost(props) {
       } else{
         const result = await response.json()
         setIsCreatePostVisible (! isCreatePostVisible)
-        window.location.reload()
-        return result} 
+        setToogleEffect(! toogleEffect)
+        console.log(result.message)} 
     } 
     catch(err){
       const errorMessage = err.toString();

@@ -1,11 +1,14 @@
-import "./style.css";
+export default async function LikeOrNot (props) {  
 
- async function sup (id) {            
-
+    const userId = props.userId
+    const id = props.id
+    const appreciate = props.appreciate
+    
     try{
-      const response = await fetch(`http://localhost:3001/api/posts/:${id}`, {
+      const response = await fetch(`http://localhost:3001/api/posts/:${id}/like`, {
         mode: "cors",
-        method: "DELETE",
+        method: "POST",
+        body: JSON.stringify({ userID: userId}),
         headers: {"Content-Type": "application/json",
                   "Authorization":  "????",
       }})
@@ -16,9 +19,8 @@ import "./style.css";
         throw new Error(`${response.status}. ${result}`)
       } else{
         const result = await response.json()
-        window.location.reload()
-        console.log(result)
-        return result} 
+        console.log(result.message)
+        } 
     } 
     catch(err){
       const errorMessage = err.toString();
@@ -26,5 +28,3 @@ import "./style.css";
     }
   }
 
-
-  export { sup}

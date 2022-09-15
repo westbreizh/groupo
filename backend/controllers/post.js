@@ -3,15 +3,14 @@ const db = require("../database-connect");
 
 // création d'un post. 
 exports.newPost = (req, res, next) => {
-  
     if (req.body.file) {  // si j'ai un fichier image dans la requete
         imageUrl = `${req.protocol}://${req.get("host")}/images/${req.body.file.filename}`;  // req.protocol renvoie le http ou https,  req.get ('host') => donne le host de notre serveur (ici localhost 3001 en réel racine de notre serveur) ensuite dossier images et le nom du fichi
         console.log("je suis la ! ")
         console.log(imageUrl)
     }
     else {
-        imageUrl = ""; //???
-        console.log("je suis ici")
+        imageUrl = ""; 
+
     }
     
     db.query(`INSERT INTO posts VALUES (NULL, '${req.body.id_user}', '${req.body.title}', CURRENT_TIMESTAMP,'${req.body.texte}', '${imageUrl}', 0, 0, "", "")`
@@ -32,7 +31,8 @@ exports.newPost = (req, res, next) => {
 
 // Modifier un post. 
 exports.modifyOnePost = (req, res, next) => {
-
+    console.log(req.body)
+    console.log(req.params.id[1])
     if (req.body.file) {  // si j'ai un fichier image dans la requete
         imageUrl = `${req.protocol}://${req.get("host")}/images/${req.body.file.filename}`;  // req.protocol renvoie le http ou https,  req.get ('host') => donne le host de notre serveur (ici localhost 3001 en réel racine de notre serveur) ensuite dossier images et le nom du fichi
         console.log("je suis la ! ")
@@ -48,6 +48,8 @@ exports.modifyOnePost = (req, res, next) => {
     SET titre = '${req.body.title}', texte = '${req.body.texte}', image_url = '${imageUrl}' 
     WHERE id = ${req.params.id[1]}`, 
     (error, result) => {
+        console.log("juste après avoir enregistrer")
+
         if (error) {
             return res.status(400).json({
                 error
@@ -61,15 +63,18 @@ exports.modifyOnePost = (req, res, next) => {
 
 // supression d'un post. 
 exports.deleteOnePost = (req, res, next) => {
-
+    console.log(req.params.id[1])
   db.query(`DELETE FROM posts WHERE id = ${req.params.id[1]}`, (error, result) => {
       if (error) {
+        console.log("erreure")
           return res.status(400).json({
               error
           });
       }
-      return res.status(200).json(result);
-  });
+      return res.status(200).json({
+
+        message: 'Votre post à été supprimer !'
+    })});
 };
 
 
@@ -115,17 +120,26 @@ exports.getAllPost = (req, res, next) => {
 
 // gestion des likes.
   exports.like = (req, res, next) => {
-    let likeOrChange = req.body.like;
-    let userId = req.body.userId;
-    db.query(`SELECT * FROM posts  WHERE id = ${req.params.id}`,   
+    let userId = (req.body.userID).toString();
+    console.log(userId)
+    console.log(typeof(userId))
+    db.query(`SELECT * FROM posts  WHERE id = ${req.params.id[1]}`,   
               (error, result) => {
-                let stringUsersliked = result.users_liked;
-                let arrayUsersLiked = stringUsersliked.split(',')
+                console.log(result)
+                let stringUsersLiked = result[0].users_liked;
+                console.log(stringUsersLiked)
+                let arrayUsersLiked = stringUsersLiked.split(',')
+                console.log(arrayUsersLiked)
 
-        if ( likeOrChange == 1 && !(arrayUsersLiked.includes(userId))){                        //  utilisateur like pour la première fois
-                stringUsersliked = arrayUsersLiked.push(userId).toString();
-                let like = result.likes + 1 ; 
-                db.query(`UPDATE posts SET like = '${like}', users_liked = '${stringUsersliked}' WHERE id = ${req.params.id}`, 
+        if ( !(arrayUsersLiked.includes(userId))){                        //  utilisateur like pour la première fois
+                stringUsersLiked = arrayUsersLiked.push(userId);
+                console.log(arrayUsersLiked)
+                stringUsersLiked = arrayUsersLiked.toString();
+                console.log(stringUsersLiked)
+                let likes = (result[0].likes) + 1 ; 
+                db.query(`UPDATE posts 
+                SET likes = '${likes}', users_liked = '${stringUsersLiked}'
+                WHERE id = ${req.params.id[1]}`, 
                 (error, result) => {
                     if (error) {
                         return res.status(400).json({
@@ -135,23 +149,11 @@ exports.getAllPost = (req, res, next) => {
                     return res.status(200).json({
                     message: 'like ajouté avec succès !'
                 })});
-            }             
-        else if ( likeOrChange == 0 && (arrayUsersLiked.includes(userId))){                        //  utilisateur change d'avis enlève son like
-            let index = arrayUsersLiked.indexOf(userId);
-            stringUsersliked = arrayUsersLiked.splice(index, 1).toString();
-            let like = result.likes - 1 ; 
-            db.query(`UPDATE posts SET like = '${like}', users_liked = '${stringUsersliked}' WHERE id = ${req.params.id}`, 
-            (error, result) => {
-                if (error) {
-                    return res.status(400).json({
-                        error
-                    });
-                }
+            }else {
+                console.log("hello")
                 return res.status(200).json({
-                message: 'like retiré avec succès !'
-            })});
-        }             
-        
+                    message: 'you can not like twice !'})
+            }              
     });
   };
   
@@ -160,7 +162,7 @@ exports.getAllPost = (req, res, next) => {
   exports.dislike = (req, res, next) => {
     let dislikeOrChange = req.body.dislike;
     let userId = req.body.userId;
-    db.query(`SELECT * FROM posts  WHERE id = ${req.params.id}`,   
+    db.query(`SELECT * FROM posts  WHERE id = ${req.params.id[1]}`,   
               (error, result) => {
                 let stringUsersDisliked = result.users_disliked;
                 let arrayUsersDisliked = stringUsersDisliked.split(',')

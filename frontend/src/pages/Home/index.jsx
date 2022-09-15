@@ -15,21 +15,17 @@ const [isCreatePostVisible, setIsCreatePostVisible] = useState(false) ;
 if(isConnected)
 
     return (
-
     <div>
-        
+      <div className='post_box'  >
         { !isCreatePostVisible ?
-        
-            <Button sx={{bgcolor: '#ec5990', mt:"20px", ml:"40%", fontSize:"22px", textTransform:"none"  }} 
-            variant="contained" onClick={() => setIsCreatePostVisible (! isCreatePostVisible)}  >
+            <Button sx={{bgcolor: '#ec5990', fontSize:"22px", textTransform:"none", mt: "20px" }}             variant="contained" onClick={() => setIsCreatePostVisible (! isCreatePostVisible)}  >
             Ajouter une publication </Button> 
-            : 
-            <CreatePost isCreatePostVisible = { isCreatePostVisible }  setIsCreatePostVisible = { setIsCreatePostVisible} /> 
+            :<CreatePost isCreatePostVisible = { isCreatePostVisible }  setIsCreatePostVisible = { setIsCreatePostVisible} /> 
         }
-        
-            < PublicationPosts />
-        
+      </div>
+        < PublicationPosts />
     </div>
+
     )
 else
 

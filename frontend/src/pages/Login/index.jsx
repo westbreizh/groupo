@@ -62,7 +62,7 @@ export default function  Login() {
         const result = await response.json()
       setToken(result.token);
       setUserId(result.id);
-      setIsAdmin(result.isAdmin);
+      setIsAdmin(result.is_admin);
       setConnected(true);
       navigate("/");
     } 

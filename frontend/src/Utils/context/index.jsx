@@ -11,9 +11,10 @@ export const AuthProvider = (props) => {
     const [token, setToken ] = useState('')
     const [userId, setUserId ] = useState('')
     const [isAdmin, setIsAdmin ] = useState()
-    
+    const [toogleEffect, setToogleEffect ] = useState(false)
 return (
-    <AuthContext.Provider value={{ token, setToken, userId, setUserId, connected, setConnected, isAdmin, setIsAdmin }}>
+    <AuthContext.Provider value={{ token, setToken, userId, setUserId, 
+    connected, setConnected, isAdmin, setIsAdmin, toogleEffect, setToogleEffect }}>
         {props.children} 
     </AuthContext.Provider>
 );

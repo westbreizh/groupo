@@ -49,8 +49,8 @@ body {
     }
     
   
-    p {
-      color: #bf1650;
+    span{
+      color: white;
     }
     
     .errors{
