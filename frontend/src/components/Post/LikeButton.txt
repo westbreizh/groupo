@@ -1,0 +1,51 @@
+import { useContext} from 'react'
+import {AuthContext} from '../../Utils/context/index'
+import {IconButton } from '@mui/material'
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
+
+
+
+export default async function DisLikeButton (props) {  
+
+  const likes = props.likes
+  const id = props.id
+  const authDatas  = useContext(AuthContext); 
+  const userID = authDatas.userId 
+  const toogleEffect = authDatas.toogleEffect  
+  const setToogleEffect = authDatas.setToogleEffect 
+
+
+  async function like () {
+
+    try{
+      const response = await fetch(`http://localhost:3001/api/posts/:${id}/like`, {
+        mode: "cors",
+        method: "POST",
+        body: JSON.stringify({ id: id, userID: userID} ),
+        headers: {"Content-Type": "application/json",
+                  "Authorization":  "????",
+      }})
+  
+      if (!response.ok) {
+        const result = await response.json()
+        console.log(result)
+        throw new Error(`${response.status}. ${result}`)
+      } else{
+        const result = await response.json()
+        setToogleEffect(! toogleEffect)
+        console.log(result.message)
+        } 
+    } 
+    catch(err){
+      const errorMessage = err.toString();
+      console.log(errorMessage)
+    }
+  }
+
+  return (
+    <IconButton onClick={() => {like()}}> 
+      < ThumbUpAltIcon color="secondary" sx={{ fontSize: 30 }} /> 
+      <span> {likes}</span>
+    </IconButton>
+  )
+}

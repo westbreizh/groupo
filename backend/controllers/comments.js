@@ -3,7 +3,7 @@ const db = require("../database-connect");
 
 //créer un nouveau commentaire. 
 exports.newComment = (req, res, next) => {
-    db.query(`INSERT INTO comments VALUES (NULL, '${req.body.id_user}', '${req.body.texte}', '${req.params.id}')`,  // req.params.id renvoit le paramètre id contenu dans l'url entant que tellle c'est l'id du post au final ...
+    db.query(`INSERT INTO comments VALUES (NULL, '${req.body.id_user}', '${req.body.texte}', '${req.params.id[1]}')`,  // req.params.id renvoit le paramètre id contenu dans l'url entant que tellle c'est l'id du post au final ...
     (error, result ) => {
         if (error) {
             return res.status(400).json({

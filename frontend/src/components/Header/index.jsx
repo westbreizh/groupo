@@ -1,8 +1,8 @@
 import logo_left from '../../assets/logo_left.png'
 import {AuthContext} from '../../Utils/context/index'
 import { useContext } from 'react'
-import LinksAuth from '../headerLinks/linksAuth'
-import LinksConnected from '../headerLinks/linksConnected'
+import LinksIsConnected from './LinksIsConnected'
+import LinksIsNotConnected from './LinksIsNotConnected'
 import "./styles.css";
 
 
@@ -18,7 +18,7 @@ function Header() {
       
         <img src={logo_left}  alt="logo-groupomania" className="img_header"/>
     
-         <LinksConnected isAdmin = {isAdmin}/>
+         <LinksIsConnected isAdmin = {isAdmin}/>
 
       </div>
 
@@ -30,7 +30,7 @@ function Header() {
       
           <img src={logo_left}  alt="logo-groupomania" className="img_header"/>
         
-          <LinksAuth />
+          <LinksIsNotConnected />
 
       </div>
     );}

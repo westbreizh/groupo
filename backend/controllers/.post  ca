@@ -1,4 +1,4 @@
-const db = require("../database-connect");
+/*const db = require("../database-connect");
 
 
 // création d'un post. 
@@ -120,20 +120,37 @@ exports.getAllPost = (req, res, next) => {
 
 // gestion des likes.
   exports.like = (req, res, next) => {
+    let post = req.body.post
+    let userId = post.id_user
+    let likes = post.likes
+    let dislikes = post.dislikes
+    let users_disliked= post.users_disliked
+    let users_liked = post.users_liked
+
+    let arrayUsersLiked = users_liked.split(',')
+
+    let arrayUsersDisLiked = users_disliked.split(',')
+    console.log(arrayUsersLiked)
+
+    if ( !(arrayUsersLiked.includes(userId)) && !(arrayUsersDisLiked.includes(userId)) ) {                        //  utilisateur like pour la première fois
+            arrayUsersLiked.push(userId);
+            stringUsersLiked = arrayUsersLiked.toString();
+            console.log(stringUsersLiked)
+             likes += 1  
+
         db.query(`UPDATE posts 
-            SET likes = '4'
+            SET likes = '${likes}', users_liked = '${stringUsersLiked}'
             WHERE id = ${req.params.id[1]}`, 
-            (error, result) => {
-                console.log("je viens d'enregistrer")
-                if (error) {
-                      return res.status(400).json({
-                          error
-                      });
-                  }
-                  return res.status(200).json(result);
+                 (error, result) => {
+        if (error) {
+              return res.status(400).json({
+                  error
               });
-}
-        
+          }
+          return res.status(200).json(result);
+      });
+    };
+
             
   
 
@@ -194,13 +211,4 @@ exports.dislike = (req, res, next) => {
                     message: 'ta changer d\'avis mon coco  !'
                 })})};
 
-            })
-  };
-
-
-
-     
-
-
-
-
+            }}

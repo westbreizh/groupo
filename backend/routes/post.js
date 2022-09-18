@@ -6,6 +6,7 @@ const postCtrl = require('../controllers/post');
 
 
 //Posts
+
 router.post('/',  multer, postCtrl.newPost);     
 router.put('/:id', postCtrl.modifyOnePost);
 router.delete('/:id',  postCtrl.deleteOnePost); 
@@ -17,7 +18,7 @@ router.get('/user:id/posts', auth, postCtrl.getUserPosts);
 router.get('/:id',auth,  postCtrl.getOnePost);       
 
 router.post('/:id/like', postCtrl.like); 
-router.post('/:id/dislike',auth, postCtrl.dislike); 
+router.post('/:id/dislike', postCtrl.dislike); 
 
 
 module.exports = router;
