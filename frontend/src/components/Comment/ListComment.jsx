@@ -7,9 +7,10 @@ import NotesIcon from '@mui/icons-material/Notes';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box'; 
 //import "./styles.css";
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 
-export default function  CreateComment(props) {
+export default function  ListComment (props) {
 
   const [isCommentPostBoxOpen, setIsCommentPostBoxOpen] = useState(false) ;
   const  authDatas  = useContext(AuthContext); 
@@ -52,46 +53,14 @@ export default function  CreateComment(props) {
     return (   
 
        <Box>
-
-        { !isCommentPostBoxOpen ? 
-
-          <IconButton onClick={() => setIsCommentPostBoxOpen (! isCommentPostBoxOpen)} > 
-          <NotesIcon color="secondary" sx={{ fontSize: 30, marginLeft: "15px" }}  /> 
-          <span>2</span>
+          <IconButton > 
+          <DriveFileRenameOutlineIcon color="secondary" sx={{ fontSize: 30 }}  /> 
           </IconButton> :
-          
-          <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#121836', padding: "5%"}}>
-            
-            <Box  sx={{ maxWidth: '58px', marginX: "left"}}>
-              <IconButton  color= "secondary" onClick={() =>  setIsCommentPostBoxOpen (! isCommentPostBoxOpen )} >
-                <CloseIcon  />
-              </IconButton>
-            </Box>
-        
-            <form onSubmit={handleSubmit(onSubmit)}>
-        
-              <h1> Nouvelle publication </h1>
-        
-              <label> Titre : </label>
-              <Input type="text" {...register("title",{ required: true }) } placeholder="votre titre" className="input" />
-              {errors.title && <p>{"Vous devez écrire un titre l'ami !"}</p>}
-              
-        
-              <label> Message : </label>
-              <TextareaAutosize  type="text" {...register("texte", { maxLength: 250 }) } placeholder="votre message de 25O caratères max" className="input" />
-              {errors.texte && <p>{"le message est trop long, vous n'êtes pas écrivain !"}</p>}
-              
-              <label> Inserer un fichier ? </label>
-              <Input type="file" {...register("file") } className="input" />
-              {errors.file && <p>{"le fichier n'a pas pu être chargé désolé!"}</p>}
-        
-              <button  type="submit"  > Publier </button>
-              <p>{errors.validation?.message}</p>
-        
-            </form>
+
+
           </Box>
-        }
-      </Box> 
+        
+      
     )
 }
 

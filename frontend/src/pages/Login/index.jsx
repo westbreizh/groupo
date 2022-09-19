@@ -1,42 +1,25 @@
-// la logique de validation et d'enregistrement des champs des inputs est asuré par le hook useForm 
-// couplé à yupResolver qui definit le shéma, le masque des entrées valable
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup'
 import validationSchemaLogin from '../../Utils/validation-shema/validationShemaLogin'
-
-// prise en charge de deux states un local pour la gestion de visualisation du mot de passe
-// un state global pour les données d'authentification connexion 
-// les variables des entrées sont gérées par hookForm comme vue ci-dessus
 import { useContext, useState } from 'react'
 import {AuthContext} from '../../Utils/context/index'
-
-// logique de navigation asssuré par le hook useNavigate
 import { useNavigate } from "react-router-dom";
-
-// on importe différents composant de la bibliothèque material-ui, 
-//la gestion du css est assuré par le fichier ./styles.css que lon importe
 import { Input, InputAdornment, IconButton } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box'; 
 import "./styles.css";
 
 
 
 export default function  Login() {
 
-//  branchement  sur le contexte global d 'authentification avec declaration par destructuration
-// des fonction pour modifier la valeur des variables. 
-  const { setToken, setUserId, setIsAdmin, setConnected } = useContext(AuthContext);  
- 
- // syntaxe et logique propre à useForm avec integration de yup
+  const { setToken, setUserId, setIsAdmin, setConnected, setUsername } = useContext(AuthContext);  
   const { register,setError, formState: { errors }, handleSubmit } = useForm({
         resolver: yupResolver(validationSchemaLogin),
          mode: 'onTouched'
         });
-
   const navigate = useNavigate();
-
-  //gestion de l'affichage du mot de passe
   const [showPassword, setShowPassWord] = useState(false) ;
   const handleClickShowPassword = () => {
     setShowPassWord( !showPassword );
@@ -46,7 +29,6 @@ export default function  Login() {
   };
 
 
-  // logique de l'appel de l'API login du backend et du traitement de la réponse
   const onSubmit = async function (data) { 
     try{
     const response = await fetch(`http://localhost:3001/api/user/login`, {
@@ -64,6 +46,7 @@ export default function  Login() {
       setUserId(result.id);
       setIsAdmin(result.is_admin);
       setConnected(true);
+      setUsername(result.username)
       navigate("/");
     } 
   } 
@@ -73,8 +56,10 @@ export default function  Login() {
     }
 }
 
-  // le rendu de notre composant
+
   return (
+
+    <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#111b4c' }}> 
 
       <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -84,7 +69,7 @@ export default function  Login() {
         <Input type="email" {...register("email") } className="input" />
         <p>{errors.email?.message}</p>
 
-        <label> mot de passe : </label>
+        <label> Mot de passe : </label>
         <Input type={showPassword? "text" : "password"} {...register("password") }  className="input"
            endAdornment={
             <InputAdornment position="end">
@@ -98,12 +83,11 @@ export default function  Login() {
           }
         />
         <p>{errors.password?.message}</p>
-
-
         <button  type="submit"  > Se connecter </button>
         <p>{errors.validation?.message}</p>
 
       </form>
+    </Box>
   )  
  }
  

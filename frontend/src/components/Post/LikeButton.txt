@@ -11,8 +11,8 @@ export default async function DisLikeButton (props) {
   const id = props.id
   const authDatas  = useContext(AuthContext); 
   const userID = authDatas.userId 
-  const toogleEffect = authDatas.toogleEffect  
-  const setToogleEffect = authDatas.setToogleEffect 
+  const toogleEffectRender = authDatas.toogleEffectRender  
+  const setToogleEffectRender = authDatas.setToogleEffectRender 
 
 
   async function like () {
@@ -32,7 +32,7 @@ export default async function DisLikeButton (props) {
         throw new Error(`${response.status}. ${result}`)
       } else{
         const result = await response.json()
-        setToogleEffect(! toogleEffect)
+        setToogleEffectRender(! toogleEffectRender)
         console.log(result.message)
         } 
     } 

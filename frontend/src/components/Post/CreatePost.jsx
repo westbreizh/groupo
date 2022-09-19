@@ -13,6 +13,7 @@ export default function  CreatePost(props) {
   const [isCreatePostBoxOpen, setIsCreatePostBoxOpen] = useState(false) ;
   const  authDatas  = useContext(AuthContext); 
   const userId = authDatas.userId  
+  const username = authDatas.username
   const toogleEffectRender = authDatas.toogleEffectRender  
   const setToogleEffectRender = authDatas.setToogleEffectRender 
   //const Token = authDatas.token;
@@ -26,7 +27,7 @@ export default function  CreatePost(props) {
       const response = await fetch(`http://localhost:3001/api/posts`, {
         mode: "cors",
         method: "POST",
-        body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0]}),
+        body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0], username: username}),
         headers: {"Content-Type": "application/json",
                   "Authorization":  "????",
       }})

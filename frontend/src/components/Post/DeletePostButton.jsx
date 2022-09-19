@@ -43,7 +43,7 @@ export default function DeletePostButton (props) {
   return (
 
   <IconButton onClick={() => { del(id) }} > 
-  <DeleteOutlined color="primary" sx={{ fontSize: 40 }}  /> 
+  <DeleteOutlined color="secondary" sx={{ fontSize: 30 }}  /> 
   </IconButton>
 
   )

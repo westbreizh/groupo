@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import { IconButton } from '@mui/material';
 
 
-export default function LinksIsConnected(props) {
+
+export default function NavIsConnected(props) {
 
   const isAdmin = props.isAdmin;
 
@@ -13,13 +13,16 @@ export default function LinksIsConnected(props) {
     <Box sx={{  mr: '5%', display: 'flex',flexWrap: 'wrap',  justifyContent: 'center',   alignItems: 'center',   typography: 'body1',       '& > :not(style) + :not(style)': { ml: 4,  },}}>
      
       { isAdmin ? 
-      <IconButton onClick={() => { }} > 
+
+      <Link href="/admin">
         < AdminPanelSettingsIcon color = "secondary"  fontSize='large'/> 
-      </IconButton>
+      </Link>
       : 
       "" }
-      
-      <Link href="/"> Déconnexion </Link>
+
+      <Link href="/"> Accueil </Link>
+      <Link href="/userProfil"> Mon compte </Link>
+      <Link href="/login"> Déconnexion </Link>
       
     </Box>
   );

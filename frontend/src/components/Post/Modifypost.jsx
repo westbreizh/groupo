@@ -3,7 +3,8 @@ import { Input, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box';
-import "./styles.css";
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
+//import "./styles.css";
 import { useContext, useState} from 'react'
 import {AuthContext} from '../../Utils/context/index'
 
@@ -61,10 +62,11 @@ const onSubmit = async function (data) {
       <Box>
 
         { !isModifyPostBoxOpen ? 
-          <Button sx={{  border: '2px solid white', borderRadius: '15px', bgcolor: '#ec5990', ml: '2%',  textTransform: 'none'}}  
-            variant="contained" onClick={() =>  setIsModifyPostBoxOpen(!isModifyPostBoxOpen)} >
-          modifier
-          </Button> :
+
+
+          <IconButton onClick={() => setIsModifyPostBoxOpen(!isModifyPostBoxOpen)} > 
+          <DesignServicesIcon color="secondary" sx={{ fontSize: 30, marginLeft: '5px' }}  /> 
+          </IconButton> :
       
           <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#121836' }}>
             

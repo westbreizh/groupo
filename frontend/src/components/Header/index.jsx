@@ -1,14 +1,14 @@
 import logo_left from '../../assets/logo_left.png'
 import {AuthContext} from '../../Utils/context/index'
 import { useContext } from 'react'
-import LinksIsConnected from './LinksIsConnected'
-import LinksIsNotConnected from './LinksIsNotConnected'
+import NavIsConnected from './NavIsConnected'
+import NavIsDisconnected from './NavIsDisconnected'
 import "./styles.css";
 
 
 function Header() {
 
-  const { connected } = useContext(AuthContext); //     je branche mon composant sur le contexte global d 'authentification
+  const { connected } = useContext(AuthContext); 
   const { isAdmin } = useContext(AuthContext);
 
   if (connected) {
@@ -18,7 +18,7 @@ function Header() {
       
         <img src={logo_left}  alt="logo-groupomania" className="img_header"/>
     
-         <LinksIsConnected isAdmin = {isAdmin}/>
+         <NavIsConnected isAdmin = {isAdmin}/>
 
       </div>
 
@@ -30,7 +30,7 @@ function Header() {
       
           <img src={logo_left}  alt="logo-groupomania" className="img_header"/>
         
-          <LinksIsNotConnected />
+          <NavIsDisconnected />
 
       </div>
     );}
