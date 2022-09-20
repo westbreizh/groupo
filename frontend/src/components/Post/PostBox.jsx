@@ -1,13 +1,12 @@
 
 import {AuthContext} from '../../Utils/context/index'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import Box from '@mui/material/Box'
 import ModifyPost  from './Modifypost'
 import DeletePostButton from './DeletePostButton'
 import CreateComment from '../Comment/CreateComment'
 import ListComment from '../Comment/ListComment'
 import LikeButton from './LikeButton'
-import Alert from '../Dialog/Alert'
 //import DisLikeButton from './DisLikeButton';
 
 import {IconButton } from '@mui/material'
@@ -18,9 +17,11 @@ import "./styles.css";
 export default function  PostBox(props) {
 
   const post = props.post
+  
   const  authDatas  = useContext(AuthContext)
-    const toogleEffectRender = authDatas.toogleEffect  
-  const setToogleEffectRender = authDatas.setToogleEffectRender
+  const [reRender, setReRender] = useState(false) ;
+
+
   const userId = authDatas.userId  
   const isAdmin = authDatas.isAdmin
   const linuxTime =Date.parse(post.date)
@@ -58,7 +59,7 @@ export default function  PostBox(props) {
               </Box>
 
               <Box>
-                  <LikeButton post = {post} />
+                  <LikeButton post = {post} reRender = {reRender} setReRender = {setReRender} />
 
 
 

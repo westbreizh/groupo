@@ -10,20 +10,19 @@ export default function LikeButtoner (props) {
   const id = post.id
   const authDatas  = useContext(AuthContext); 
   const userID = authDatas.userId 
-  const toogleEffectRender = authDatas.toogleEffect  
-  const setToogleEffectRender = authDatas.setToogleEffectRender 
+  const reRender = props.reRender
+  const setReRender = props.setReRender 
   console.log("je suis dans like")
-  console.log(likes)
+  console.log(userID)
 
   async function liker () {
       try{
-        likes+=1
         console.log(likes)
         console.log("je rentre dans ma fonction")
         const response = await fetch(`http://localhost:3001/api/posts/:${id}/like`, {
           mode: "cors",
           method: "PUT",
-          body: JSON.stringify({ id: id, likes: likes, userId : userID } ),
+          body: JSON.stringify({  userId : userID } ),
           headers: {"Content-Type": "application/json",
                     "Authorization":  "????",
         }})
@@ -35,7 +34,7 @@ export default function LikeButtoner (props) {
         } else{
           const result = await response.json()
           console.log(result.message)
-          setToogleEffectRender(!toogleEffectRender)
+          setReRender(!reRender)
           } 
       } 
       catch(err){

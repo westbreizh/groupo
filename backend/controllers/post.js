@@ -118,26 +118,76 @@ exports.getAllPost = (req, res, next) => {
 
 
 // gestion des likes.
+
   exports.like = (req, res, next) => {
+    console.log(req.body)
+   let userId = (req.body.userId).toString();
+   console.log(userId)
+    db.query(`SELECT * FROM posts  WHERE id = ${req.params.id[1]}`,   
+    (error, result) => {
+      let post = result[0]
+      let usersLiked = post.users_liked;
+      let arrayUsersLiked = usersLiked.split(',')
+      let usersDisLiked = post.users_disliked;
+      let arrayUsersDisLiked = usersDisLiked.split(',')
+      let likes = post.likes
+      let dislikes = post.dislikes
+      console.log(arrayUsersLiked)
+      console.log(arrayUsersDisLiked)
 
+      let cond1 = !arrayUsersLiked.includes(userId)
+      console.log(cond1)
+      let cond2 = !arrayUsersDisLiked.includes(userId)
+      console.log(cond2)
+
+
+        if (cond1 && cond2) {
+            likes +=1
+            arrayUsersLiked.push(userId);
+            usersLiked = arrayUsersLiked.toString();
+            db.query(`UPDATE posts 
+                SET likes = '${likes}', users_liked = '${usersLiked}'
+                WHERE id = ${req.params.id[1]}`, 
+                (error, result) => {
+                    console.log("je viens d'enregistrer en un")
+                    if (error) {
+                        return res.status(400).json({
+                            error
+                        });
+                    }
+                    return res.status(200).json({
+                        message: 'like ajouté !'
+
+                    });
+                });
+        }
+        if (cond1 && !cond2) {
+            likes +=1
+            dislikes -=1 
+            console.log(dislikes)
+            arrayUsersLiked.push(userId);
+            usersLiked = arrayUsersLiked.toString();
+            arrayUsersDisLiked.filter(item => item !== (userId))  ;
+            usersDisLiked = arrayUsersDisLiked.toString();
+
+            db.query(`UPDATE posts 
+                SET likes = '${likes}',  users_liked = '${usersLiked}', dislikes= '${dislikes}', users_disliked = '${usersDisLiked}'
+                WHERE id = ${req.params.id[1]}`, 
+                (error, result) => {
+                    console.log("je viens d'enregistrer en deux")
+                    if (error) {
+                        return res.status(400).json({
+                            error
+                        });
+                    }
+                    return res.status(200).json({
+                        message: 'like ajouté !'
+
+                    });
+                });
+        }
+    })}
   
-        db.query(`UPDATE posts 
-            SET likes = '${req.body.likes}'
-            WHERE id = ${req.params.id[1]}`, 
-            (error, result) => {
-                console.log("je viens d'enregistrer")
-                if (error) {
-                      return res.status(400).json({
-                          error
-                      });
-                  }
-                  return res.status(200).json({
-                    message: 'like ajouté !'
-
-                  });
-              });
-}
-        
 
     
   
@@ -201,11 +251,3 @@ exports.dislike = (req, res, next) => {
 
             })
   };
-
-
-
-     
-
-
-
-
