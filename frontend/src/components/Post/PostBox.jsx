@@ -1,11 +1,13 @@
 
 import {AuthContext} from '../../Utils/context/index'
 import { useContext } from 'react'
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 import ModifyPost  from './Modifypost'
-import DeletePostButton from './DeletePostButton';
+import DeletePostButton from './DeletePostButton'
 import CreateComment from '../Comment/CreateComment'
-import ListComment from '../Comment/ListComment';
+import ListComment from '../Comment/ListComment'
+import LikeButton from './LikeButton'
+import Alert from '../Dialog/Alert'
 //import DisLikeButton from './DisLikeButton';
 
 import {IconButton } from '@mui/material'
@@ -17,6 +19,8 @@ export default function  PostBox(props) {
 
   const post = props.post
   const  authDatas  = useContext(AuthContext)
+    const toogleEffectRender = authDatas.toogleEffect  
+  const setToogleEffectRender = authDatas.setToogleEffectRender
   const userId = authDatas.userId  
   const isAdmin = authDatas.isAdmin
   const linuxTime =Date.parse(post.date)
@@ -26,7 +30,8 @@ export default function  PostBox(props) {
 
     return (
 
-      <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#111b4c' }}> 
+  
+      <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#111b4c', position: 'relative', }}> 
             
             <h1> {post.titre}</h1>
 
@@ -34,6 +39,8 @@ export default function  PostBox(props) {
 
             <p> {post.texte}</p>
 
+
+        
 
             <Box sx={ { display: 'flex', justifyContent: "space-between", alignItems:"center"   }}  >
 
@@ -51,10 +58,7 @@ export default function  PostBox(props) {
               </Box>
 
               <Box>
-                <IconButton > 
-                    < ThumbUpAltIcon color="secondary" sx={{ fontSize: 25 }} /> 
-                    <span> 2 </span>
-                </IconButton>
+                  <LikeButton post = {post} />
 
 
 
@@ -65,7 +69,7 @@ export default function  PostBox(props) {
               </Box>
               
             </Box>
-            <h6>  De {post.username} le {dateFrench} </h6>
+            <h6>   {post.username} le {dateFrench} </h6>
         </Box>
                  
 

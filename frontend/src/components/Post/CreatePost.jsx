@@ -5,7 +5,7 @@ import { Input, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box'; 
-//import "./styles.css";
+import "./styles.css";
 
 
 export default function  CreatePost(props) {

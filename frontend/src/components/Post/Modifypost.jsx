@@ -4,7 +4,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
-//import "./styles.css";
 import { useContext, useState} from 'react'
 import {AuthContext} from '../../Utils/context/index'
 
@@ -23,7 +22,6 @@ const toogleEffectRender = authDatas.toogleEffectRender
 const setToogleEffectRender = authDatas.setToogleEffectRender
 
 const [isModifyPostBoxOpen, setIsModifyPostBoxOpen] = useState(false) ;
-
 
 
 
@@ -68,7 +66,8 @@ const onSubmit = async function (data) {
           <DesignServicesIcon color="secondary" sx={{ fontSize: 30, marginLeft: '5px' }}  /> 
           </IconButton> :
       
-          <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#121836' }}>
+          <Box  sx={{  border: '2px solid white', borderRadius: '15px', width: '100%',
+           mx: 'auto', mt: '50px', bgcolor: '#121836', position: 'absolute',top: "10%",left: '0%', zIndex: 'modal',}}>
             
             <Box  sx={{ maxWidth: '58px', marginX: "left"}}>
               <IconButton  color= "secondary" onClick={() => setIsModifyPostBoxOpen(!isModifyPostBoxOpen) } >

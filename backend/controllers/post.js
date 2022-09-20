@@ -43,7 +43,6 @@ exports.modifyOnePost = (req, res, next) => {
         console.log("je suis ici")
     }
 
-
     db.query(`UPDATE posts 
     SET titre = '${req.body.title}', texte = '${req.body.texte}', image_url = '${imageUrl}' 
     WHERE id = ${req.params.id[1]}`, 
@@ -120,8 +119,10 @@ exports.getAllPost = (req, res, next) => {
 
 // gestion des likes.
   exports.like = (req, res, next) => {
+
+  
         db.query(`UPDATE posts 
-            SET likes = '4'
+            SET likes = '${req.body.likes}'
             WHERE id = ${req.params.id[1]}`, 
             (error, result) => {
                 console.log("je viens d'enregistrer")
@@ -130,11 +131,15 @@ exports.getAllPost = (req, res, next) => {
                           error
                       });
                   }
-                  return res.status(200).json(result);
+                  return res.status(200).json({
+                    message: 'like ajouté !'
+
+                  });
               });
 }
         
-            
+
+    
   
 
 // gestion des dislikes.

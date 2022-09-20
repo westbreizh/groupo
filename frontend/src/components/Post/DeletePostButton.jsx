@@ -1,8 +1,9 @@
 //import { useState, useContext, useEffect } from 'react'
-import { useContext} from 'react'
+import { useContext, useState} from 'react'
 import {AuthContext} from '../../Utils/context/index'
 import {IconButton } from '@mui/material';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined'
+import Alert from '../Dialog/Alert'
 
 export default function DeletePostButton (props) {            
 
@@ -10,9 +11,12 @@ export default function DeletePostButton (props) {
   const  authDatas  = useContext(AuthContext); 
   const toogleEffectRender = authDatas.toogleEffectRender  
   const setToogleEffectRender = authDatas.setToogleEffectRender
+  const [open, setOpen] = useState(false);
+  const [supr, setSupr] = useState(false);
 
 
   async function del () {
+    if (supr){
       try{
         console.log("je rentre dans ma fonction")
         const response = await fetch(`http://localhost:3001/api/posts/:${id}`, {
@@ -37,15 +41,16 @@ export default function DeletePostButton (props) {
         console.log(errorMessage)
       }
     }
-
-  
+  }
+  del()
 
   return (
-
-  <IconButton onClick={() => { del(id) }} > 
-  <DeleteOutlined color="secondary" sx={{ fontSize: 30 }}  /> 
-  </IconButton>
-
+  <div>
+    <Alert open = {open} setOpen = {setOpen} setSupr = {setSupr}/>
+    <IconButton onClick={() => {  setOpen(true) }} > 
+    <DeleteOutlined color="secondary" sx={{ fontSize: 30 }}  /> 
+    </IconButton>
+  </div>
   )
 
 
