@@ -141,7 +141,7 @@ exports.getAllPost = (req, res, next) => {
       console.log(cond2)
 
 
-        if (cond1 && cond2) {
+        if (cond1 && cond2) {    // utilisateur like pour la première fois
             likes +=1
             arrayUsersLiked.push(userId);
             usersLiked = arrayUsersLiked.toString();
@@ -161,13 +161,15 @@ exports.getAllPost = (req, res, next) => {
                     });
                 });
         }
-        if (cond1 && !cond2) {
+        if (cond1 && !cond2) {   // utilisateur like alors qu' il avait déjà disliker
             likes +=1
             dislikes -=1 
             console.log(dislikes)
             arrayUsersLiked.push(userId);
             usersLiked = arrayUsersLiked.toString();
-            arrayUsersDisLiked.filter(item => item !== (userId))  ;
+            let index = arrayUsersDisLiked.indexOf(userId)
+            arrayUsersDisLiked.splice(index, 1)
+            console.log(arrayUsersDisLiked)
             usersDisLiked = arrayUsersDisLiked.toString();
 
             db.query(`UPDATE posts 
@@ -181,7 +183,7 @@ exports.getAllPost = (req, res, next) => {
                         });
                     }
                     return res.status(200).json({
-                        message: 'like ajouté !'
+                        message: 'like ajouté et dislike supprimé !'
 
                     });
                 });
@@ -191,63 +193,77 @@ exports.getAllPost = (req, res, next) => {
 
     
   
-
 // gestion des dislikes.
-exports.dislike = (req, res, next) => {
-    console.log("je suis ici")
-    let userId = (req.body.userID).toString();
 
+exports.dislike = (req, res, next) => {            
+    console.log(req.body)
+   let userId = (req.body.userId).toString();
+   console.log(userId)
     db.query(`SELECT * FROM posts  WHERE id = ${req.params.id[1]}`,   
-              (error, result) => {
-                let stringUsersLiked = result[0].users_liked;
-                let arrayUsersLiked = stringUsersLiked.split(',')
-                let stringUsersDisLiked = result[0].users_disliked;
-                let arrayUsersDisLiked = stringUsersDisLiked.split(',')
-                console.log(arrayUsersLiked)
-                console.log(arrayUsersDisLiked)
-                console.log(stringUsersDisLiked)
+    (error, result) => {
+      let post = result[0]
+      let usersLiked = post.users_liked;
+      let arrayUsersLiked = usersLiked.split(',')
+      let usersDisLiked = post.users_disliked;
+      let arrayUsersDisLiked = usersDisLiked.split(',')
+      let likes = post.likes
+      let dislikes = post.dislikes
+      console.log(arrayUsersLiked)
+      console.log(arrayUsersDisLiked)
 
-        if ( !(arrayUsersLiked.includes(userId)) && !(arrayUsersDisLiked.includes(userId)) ) {                        //  utilisateur dislike pour la première fois
-                console.log("je suis ic")
-                arrayUsersDisLiked.push(userId);
-                stringUsersDisLiked = arrayUsersDisLiked.toString();
-                console.log(stringUsersDisLiked)
-                let dislikes = (result[0].dislikes) + 1 ; 
-                console.log(dislikes)
-                db.query(`UPDATE posts 
-                SET dislikes = '${dislikes}', users_disliked = '${stringUsersDisLiked}'
+      let cond1 = !arrayUsersLiked.includes(userId)
+      console.log(cond1)
+      let cond2 = !arrayUsersDisLiked.includes(userId)
+      console.log(cond2)
+
+
+        if (cond1 && cond2) {                // utilisateur dislike pour la première fois
+            dislikes +=1
+            arrayUsersDisLiked.push(userId);
+            usersDisLiked = arrayUsersDisLiked.toString();
+            db.query(`UPDATE posts 
+                SET dislikes = '${dislikes}', users_disliked = '${usersDisLiked}'
                 WHERE id = ${req.params.id[1]}`, 
                 (error, result) => {
+                    console.log("je viens d'enregistrer en un dislike")
                     if (error) {
                         return res.status(400).json({
                             error
                         });
                     }
                     return res.status(200).json({
-                    message: 'dislike ajouté avec succès !'
-                })});
-                
-            }else if  ( (arrayUsersLiked.includes(userId)) && !(arrayUsersDisLiked.includes(userId)) ){                        //  utilisateur change d'avis et dislike
-                
-                arrayUsersDisLiked.push(userId);
-                stringUsersDisLiked = arrayUsersDisLiked.toString();
-                arrayUsersLiked.filter(item => item !== (userId))  ;
-                stringUsersLiked = arrayUsersLiked.toString();
+                        message: 'dislike ajouté !'
 
-                let likes = (result[0].likes) - 1 ; 
-                let dislikes = (result[0].dislikes) + 1 ; 
-                db.query(`UPDATE posts 
-                SET likes = '${likes}', users_liked = '${stringUsersLiked}' dislikes = '${dislikes}', users_disliked = '${stringUsersDisLiked}'
+                    });
+                });
+        }
+        if (!cond1 && cond2) {          // utilisateur dislike alors qu'il avait liker auparavant
+            likes -=1
+            dislikes +=1 
+            console.log(dislikes)
+            arrayUsersDisLiked.push(userId);
+            usersDisLiked = arrayUsersDisLiked.toString();
+            let index = arrayUsersLiked.indexOf(userId)
+            arrayUsersLiked.splice(index, 1)
+            console.log(arrayUsersLiked)
+            usersDisLiked = arrayUsersLiked.toString();
+
+            db.query(`UPDATE posts 
+                SET likes = '${likes}',  users_liked = '${usersLiked}', dislikes= '${dislikes}', users_disliked = '${usersDisLiked}'
                 WHERE id = ${req.params.id[1]}`, 
                 (error, result) => {
+                    console.log("je viens d'enregistrer en deux dislike")
                     if (error) {
                         return res.status(400).json({
                             error
                         });
                     }
                     return res.status(200).json({
-                    message: 'ta changer d\'avis mon coco  !'
-                })})};
+                        message: 'dislike ajouté et like supprimé !'
 
-            })
-  };
+                    });
+                });
+        }
+    })}
+  
+

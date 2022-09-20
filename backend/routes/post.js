@@ -18,7 +18,7 @@ router.get('/user:id/posts', auth, postCtrl.getUserPosts);
 router.get('/:id',auth,  postCtrl.getOnePost);       
 
 router.put('/:id/like', postCtrl.like); 
-router.post('/:id/dislike', postCtrl.dislike); 
+router.put('/:id/dislike', postCtrl.dislike); 
 
 
 module.exports = router;

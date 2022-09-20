@@ -7,11 +7,7 @@ import DeletePostButton from './DeletePostButton'
 import CreateComment from '../Comment/CreateComment'
 import ListComment from '../Comment/ListComment'
 import LikeButton from './LikeButton'
-//import DisLikeButton from './DisLikeButton';
-
-import {IconButton } from '@mui/material'
-import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt'
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
+import DisLikeButton from './DisLikeButton '
 import "./styles.css";
 
 export default function  PostBox(props) {
@@ -60,13 +56,7 @@ export default function  PostBox(props) {
 
               <Box>
                   <LikeButton post = {post} reRender = {reRender} setReRender = {setReRender} />
-
-
-
-                <IconButton > 
-                    < ThumbDownAltIcon color="secondary" sx={{ fontSize: 25 }} /> 
-                    <span> 2 </span>
-                </IconButton>
+                  <DisLikeButton post = {post} reRender = {reRender} setReRender = {setReRender} />
               </Box>
               
             </Box>

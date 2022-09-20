@@ -2,25 +2,24 @@
 import { useContext} from 'react'
 import {AuthContext} from '../../Utils/context/index'
 import {IconButton } from '@mui/material';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt'
 
-
-export default function LikeButton (props) {            
+export default function DisLikeButton (props) {            
   const post = props.post
-  let likes = post.likes
+  let dislikes = post.dislikes
   const id = post.id
   const authDatas  = useContext(AuthContext); 
   const userID = authDatas.userId 
   const reRender = props.reRender
   const setReRender = props.setReRender 
-  console.log("je suis dans like")
+  console.log("je suis dans dislike")
   console.log(userID)
 
-  async function liker () {
+  async function disliker () {
       try{
-        console.log(likes)
+        console.log(dislikes)
         console.log("je rentre dans ma fonction")
-        const response = await fetch(`http://localhost:3001/api/posts/:${id}/like`, {
+        const response = await fetch(`http://localhost:3001/api/posts/:${id}/dislike`, {
           mode: "cors",
           method: "PUT",
           body: JSON.stringify({  userId : userID } ),
@@ -48,9 +47,9 @@ export default function LikeButton (props) {
 
   return (
 
-  <IconButton onClick={() => { liker(id) }} > 
-  <span> {likes}</span>
-  <ThumbUpAltIcon color="secondary" sx={{ fontSize: 30 }}  /> 
+  <IconButton onClick={() => { disliker(id) }} > 
+  <span> {dislikes}</span>
+  <ThumbDownAltIcon color="secondary" sx={{ fontSize: 30 }}  /> 
   </IconButton>
 
   )
