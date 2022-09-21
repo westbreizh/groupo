@@ -7,7 +7,8 @@ import NotesIcon from '@mui/icons-material/Notes';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box'; 
 //import "./styles.css";
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+
+
 
 
 export default function  ListComment (props) {
@@ -53,13 +54,13 @@ export default function  ListComment (props) {
     return (   
 
        <Box>
+           <span>2</span>
           <IconButton > 
-          <DriveFileRenameOutlineIcon color="secondary" sx={{ fontSize: 30 }}  /> 
+          <NotesIcon color="secondary" sx={{ fontSize: 30 }}  /> 
           </IconButton> :
 
 
           </Box>
-        
       
     )
 }

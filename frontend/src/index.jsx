@@ -19,14 +19,14 @@ const root = createRoot(document.getElementById("root"));
 root.render(
 
   <BrowserRouter>
-    <AuthProvider>  {/*je delimite le scope la portée de mon context,  on donne acces aux variables d'autorisation aux enfants via le composant fournisseur*/}
+    <AuthProvider>  
       <Header />
       <Routes>
-      <Route path='/signup' element={<SignUp />} /> 
-            <Route path='/login' element={<Login />} /> 
-            <Route path='' element={<Home  />} />
-            <Route path='/admin' element={<Admin />} />
-            <Route path='/userProfil' element={<UserProfil />} />
+        <Route path='/signup' element={<SignUp />} /> 
+        <Route path='/login' element={<Login />} /> 
+        <Route path='' element={<Home  />} />
+        <Route path='/admin' element={<Admin />} />
+        <Route path='/userProfil' element={<UserProfil />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>

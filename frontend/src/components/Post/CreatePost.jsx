@@ -14,13 +14,11 @@ export default function  CreatePost(props) {
   const  authDatas  = useContext(AuthContext); 
   const userId = authDatas.userId  
   const username = authDatas.username
-  const toogleEffectRender = authDatas.toogleEffectRender  
-  const setToogleEffectRender = authDatas.setToogleEffectRender 
-  //const Token = authDatas.token;
+  const toogleRender = authDatas.toogleRender  
+  const setToogleRender = authDatas.setToogleRender 
+  const token = authDatas.token;
   const { register,setError, formState: { errors }, handleSubmit } = useForm({      
            mode: 'onTouched'});
-  
-
   const onSubmit = async function (data) {            
     
     try{
@@ -29,7 +27,7 @@ export default function  CreatePost(props) {
         method: "POST",
         body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0], username: username}),
         headers: {"Content-Type": "application/json",
-                  "Authorization":  "????",
+        Authorization: 'Bearer ' + token,
       }})
   
       if (!response.ok) {
@@ -39,7 +37,10 @@ export default function  CreatePost(props) {
       } else{
         const result = await response.json()
         setIsCreatePostBoxOpen (! isCreatePostBoxOpen)
-        setToogleEffectRender(! toogleEffectRender)
+        console.log("creation post")
+
+        setToogleRender(! toogleRender)
+        console.log(toogleRender)
         console.log(result.message)} 
     } 
     catch(err){
@@ -75,19 +76,19 @@ export default function  CreatePost(props) {
         
               <label> Titre : </label>
               <Input type="text" {...register("title",{ required: true }) } placeholder="votre titre" className="input" />
-              {errors.title && <p>{"Vous devez écrire un titre l'ami !"}</p>}
+              {errors.title && <p className="error" >{"Vous devez écrire un titre l'ami !"}</p>}
               
         
               <label> Message : </label>
               <TextareaAutosize  type="text" {...register("texte", { maxLength: 250 }) } placeholder="votre message de 25O caratères max" className="input" />
-              {errors.texte && <p>{"le message est trop long, vous n'êtes pas écrivain !"}</p>}
+              {errors.texte && <p className="error">{"le message est trop long, vous n'êtes pas écrivain !"}</p>}
               
               <label> Inserer un fichier ? </label>
               <Input type="file" {...register("file") } className="input" />
-              {errors.file && <p>{"le fichier n'a pas pu être chargé désolé!"}</p>}
+              {errors.file && <p className="error">{"le fichier n'a pas pu être chargé désolé!"}</p>}
         
               <button  type="submit"  > Publier </button>
-              <p>{errors.validation?.message}</p>
+              <p className="error">{errors.validation?.message}</p>
         
             </form>
           </Box>

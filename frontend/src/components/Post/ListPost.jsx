@@ -2,17 +2,15 @@ import {AuthContext} from '../../Utils/context/index'
 import { useState, useContext, useEffect } from 'react'
 import "./styles.css";
 import PostBox from './PostBox';
-
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 export default function  ListPosts() {
 
   const  authDatas  = useContext(AuthContext);        //  branchement  sur le contexte global d 'authentification  
-  //const Token = authDatas.token;
-  const toogleEffectRender = authDatas.toogleEffectRender  
-  const setToogleEffectRender = authDatas.setToogleEffectRender
+  const token = authDatas.token;
+  const toogleRender = authDatas.toogleRender 
   const [postsArray, setPostsArray] = useState([])
-
-
+ 
   useEffect(() => {
     async function fetchArrayPosts()  {            // logique de l'appel de l'API de creation d'enregistrement du backend et du traitement de la réponse
       try{
@@ -20,12 +18,12 @@ export default function  ListPosts() {
           mode: "cors",
           method: "GET",
           headers: {"Content-Type": "application/json",
-                    "Authorization":  "????",
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+           // Authorization: 'Bearer ' + token,
         }})
     
         if (!response.ok) {
           const result = await response.json()
-          console.log(result)
           throw new Error(`${response.status}. ${result}`)
         } else{
 
@@ -40,7 +38,7 @@ export default function  ListPosts() {
         } 
     }
     fetchArrayPosts()
-  }, [toogleEffectRender])
+  }, [toogleRender])
 
 
     return (
@@ -50,8 +48,6 @@ export default function  ListPosts() {
           <PostBox key={post.id} post = {post} />
 
         ))
-
-
     )
 }
 

@@ -3,15 +3,15 @@ import {AuthContext} from '../../Utils/context/index'
 import { useContext } from 'react'
 import NavIsConnected from './NavIsConnected'
 import NavIsDisconnected from './NavIsDisconnected'
-import "./styles.css";
+
 
 
 function Header() {
 
-  const { connected } = useContext(AuthContext); 
+  const { isConnected } = useContext(AuthContext); 
   const { isAdmin } = useContext(AuthContext);
 
-  if (connected) {
+  if (isConnected) {
     return (
 
       <div className="header">

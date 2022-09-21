@@ -18,9 +18,9 @@ const image_url = post.image_url
 const { register,setError, formState: { errors }, handleSubmit } = useForm({       
            mode: 'onTouched'});
 const  authDatas  = useContext(AuthContext);             
-const toogleEffectRender = authDatas.toogleEffectRender  
-const setToogleEffectRender = authDatas.setToogleEffectRender
-
+const toogleRender = authDatas.toogleRender  
+const setToogleRender = authDatas.setToogleRender 
+const token = authDatas.token;
 const [isModifyPostBoxOpen, setIsModifyPostBoxOpen] = useState(false) ;
 
 
@@ -33,17 +33,19 @@ const onSubmit = async function (data) {
         method: "PUT",
         body: JSON.stringify({  title: data.title, texte: data.texte, file: data.file[0], imageUrl: image_url }),
         headers: {"Content-Type": "application/json",
-                  "Authorization":  "????",
+                  "Authorization":  'Bearer ' + token
       }})
   
       if (!response.ok) {
         const result = await response.json()
-        console.log(result)
         throw new Error(`${response.status}. ${result}`)
       } else{
         const result = await response.json()
+        console.log("modify")
+        console.log(toogleRender)
+        setToogleRender(!toogleRender)
+        console.log(toogleRender)
 
-        setToogleEffectRender(!toogleEffectRender)
         console.log(result.message)
         setIsModifyPostBoxOpen(!isModifyPostBoxOpen)
         } 

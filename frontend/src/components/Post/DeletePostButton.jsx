@@ -8,9 +8,10 @@ import Alert from '../Dialog/Alert'
 export default function DeletePostButton (props) {            
 
   const id  = props.id ; 
-  const  authDatas  = useContext(AuthContext); 
-  const toogleEffectRender = authDatas.toogleEffectRender  
-  const setToogleEffectRender = authDatas.setToogleEffectRender
+  const  authDatas  = useContext(AuthContext);
+  const token = authDatas.token; 
+  const toogleRender = authDatas.toogleRender  
+  const setToogleRender = authDatas.setToogleRender 
   const [open, setOpen] = useState(false);
   const [supr, setSupr] = useState(false);
 
@@ -23,7 +24,7 @@ export default function DeletePostButton (props) {
           mode: "cors",
           method: "DELETE",
           headers: {"Content-Type": "application/json",
-                    "Authorization":  "????",
+          Authorization: 'Bearer ' + token,
         }})
     
         if (!response.ok) {
@@ -32,8 +33,12 @@ export default function DeletePostButton (props) {
           throw new Error(`${response.status}. ${result}`)
         } else{
           const result = await response.json()
-          setToogleEffectRender(! toogleEffectRender)
           console.log(result.message)
+          setSupr(!supr)
+          console.log("delete")
+          console.log(toogleRender)
+          setToogleRender(!toogleRender)
+          console.log(toogleRender)
           } 
       } 
       catch(err){
@@ -42,6 +47,7 @@ export default function DeletePostButton (props) {
       }
     }
   }
+
   del()
 
   return (

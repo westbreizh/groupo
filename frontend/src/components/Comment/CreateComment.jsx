@@ -1,35 +1,35 @@
 import { useForm } from "react-hook-form"            
 import { useContext,useState} from 'react'
 import {AuthContext} from '../../Utils/context/index'
-import { Input, IconButton, Button } from '@mui/material';
+import {  IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import NotesIcon from '@mui/icons-material/Notes';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box'; 
-//import "./styles.css";
+import "./styles.css";
 
 
 export default function  CreateComment(props) {
 
   const [isCommentPostBoxOpen, setIsCommentPostBoxOpen] = useState(false) ;
   const  authDatas  = useContext(AuthContext); 
+  const username = authDatas.username
   const userId = authDatas.userId  
-  const toogleEffectRender = authDatas.toogleEffectRender  
-  const setToogleEffectRender = authDatas.setToogleEffectRender 
-  //const Token = authDatas.token;
+  const toogleRender = authDatas.toogleRender  
+  const setToogleRender = authDatas.setToogleRender 
   const { register,setError, formState: { errors }, handleSubmit } = useForm({      
            mode: 'onTouched'});
   const id = props.id
 
   const onSubmit = async function (data) {            
-    
+
     try{
       const response = await fetch(`http://localhost:3001/api/comments/:${id}`, {
         mode: "cors",
         method: "POST",
-        body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0]}),
+        body: JSON.stringify({  id_user: userId, texte: data.texte, username: username}),
         headers: {"Content-Type": "application/json",
-                  "Authorization":  "????",
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
       }})
   
       if (!response.ok) {
@@ -39,8 +39,9 @@ export default function  CreateComment(props) {
       } else{
         const result = await response.json()
         setIsCommentPostBoxOpen (! isCommentPostBoxOpen)
-        setToogleEffectRender(! toogleEffectRender)
-        console.log(result.message)} 
+        console.log(result.message)
+        setToogleRender(! toogleRender)
+        } 
     } 
     catch(err){
       const errorMessage = err.toString();
@@ -56,37 +57,29 @@ export default function  CreateComment(props) {
         { !isCommentPostBoxOpen ? 
 
           <IconButton onClick={() => setIsCommentPostBoxOpen (! isCommentPostBoxOpen)} > 
-          <NotesIcon color="secondary" sx={{ fontSize: 30, marginLeft: "15px" }}  /> 
-          <span>2</span>
+          <DriveFileRenameOutlineIcon color="secondary" sx={{ fontSize: 30, marginLeft: "15px" }}  /> 
           </IconButton> :
           
-          <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#121836', padding: "5%"}}>
-            
+          <Box  sx={{  border: '2px solid white', borderRadius: '35px', width: '100%',
+          mx: 'auto', mt: '50px', bgcolor: '#323e78', position: 'absolute',top: "50%",left: '0%', zIndex: 'modal',}}>
+
             <Box  sx={{ maxWidth: '58px', marginX: "left"}}>
               <IconButton  color= "secondary" onClick={() =>  setIsCommentPostBoxOpen (! isCommentPostBoxOpen )} >
                 <CloseIcon  />
               </IconButton>
             </Box>
         
+
+
             <form onSubmit={handleSubmit(onSubmit)}>
-        
-              <h1> Nouvelle publication </h1>
-        
-              <label> Titre : </label>
-              <Input type="text" {...register("title",{ required: true }) } placeholder="votre titre" className="input" />
-              {errors.title && <p>{"Vous devez écrire un titre l'ami !"}</p>}
+
+            <h3> Commentaire </h3>
+
+              <TextareaAutosize  type="text" {...register("texte", { maxLength: 250 }) } placeholder="votre message de 25O caratères max" className="textaera" />
+              {errors.texte && <p className="error">{"le message est trop long, vous n'êtes pas écrivain !"}</p>}
               
-        
-              <label> Message : </label>
-              <TextareaAutosize  type="text" {...register("texte", { maxLength: 250 }) } placeholder="votre message de 25O caratères max" className="input" />
-              {errors.texte && <p>{"le message est trop long, vous n'êtes pas écrivain !"}</p>}
-              
-              <label> Inserer un fichier ? </label>
-              <Input type="file" {...register("file") } className="input" />
-              {errors.file && <p>{"le fichier n'a pas pu être chargé désolé!"}</p>}
-        
-              <button  type="submit"  > Publier </button>
-              <p>{errors.validation?.message}</p>
+              <button  type="submit" className="publicate"  > Publier </button>
+              <p className="error">{errors.validation?.message}</p>
         
             </form>
           </Box>

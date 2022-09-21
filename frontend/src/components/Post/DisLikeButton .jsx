@@ -10,10 +10,10 @@ export default function DisLikeButton (props) {
   const id = post.id
   const authDatas  = useContext(AuthContext); 
   const userID = authDatas.userId 
-  const reRender = props.reRender
-  const setReRender = props.setReRender 
-  console.log("je suis dans dislike")
-  console.log(userID)
+  const toogleRender = authDatas.toogleRender  
+  const setToogleRender = authDatas.setToogleRender 
+  const token = authDatas.token;
+
 
   async function disliker () {
       try{
@@ -24,7 +24,7 @@ export default function DisLikeButton (props) {
           method: "PUT",
           body: JSON.stringify({  userId : userID } ),
           headers: {"Content-Type": "application/json",
-                    "Authorization":  "????",
+                    "Authorization": 'Bearer ' + token,
         }})
     
         if (!response.ok) {
@@ -34,7 +34,8 @@ export default function DisLikeButton (props) {
         } else{
           const result = await response.json()
           console.log(result.message)
-          setReRender(!reRender)
+          setToogleRender(! toogleRender)
+
           } 
       } 
       catch(err){

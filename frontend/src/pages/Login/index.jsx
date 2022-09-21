@@ -8,13 +8,13 @@ import { Input, InputAdornment, IconButton } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Box from '@mui/material/Box'; 
-import "./styles.css";
+
 
 
 
 export default function  Login() {
 
-  const { setToken, setUserId, setIsAdmin, setConnected, setUsername } = useContext(AuthContext);  
+  const { setToken, setUserId, setIsAdmin, setIsConnected, setUsername } = useContext(AuthContext);  
   const { register,setError, formState: { errors }, handleSubmit } = useForm({
         resolver: yupResolver(validationSchemaLogin),
          mode: 'onTouched'
@@ -45,8 +45,11 @@ export default function  Login() {
       setToken(result.token);
       setUserId(result.id);
       setIsAdmin(result.is_admin);
-      setConnected(true);
+      setIsConnected(true);
       setUsername(result.username)
+      localStorage.setItem('token', result.token)
+      localStorage.setItem('id', result.id)
+      localStorage.setItem('admin', result.is_admin)
       navigate("/");
     } 
   } 
@@ -67,7 +70,7 @@ export default function  Login() {
 
         <label> Email: </label>
         <Input type="email" {...register("email") } className="input" />
-        <p>{errors.email?.message}</p>
+        <p className="error">{errors.email?.message}</p>
 
         <label> Mot de passe : </label>
         <Input type={showPassword? "text" : "password"} {...register("password") }  className="input"
@@ -82,9 +85,9 @@ export default function  Login() {
             </InputAdornment>
           }
         />
-        <p>{errors.password?.message}</p>
+         <p className="error">{errors.password?.message}</p>
         <button  type="submit"  > Se connecter </button>
-        <p>{errors.validation?.message}</p>
+        <p className="error">{errors.validation?.message}</p>
 
       </form>
     </Box>

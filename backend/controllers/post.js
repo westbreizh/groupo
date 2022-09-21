@@ -13,7 +13,7 @@ exports.newPost = (req, res, next) => {
 
     }
     
-    db.query(`INSERT INTO posts VALUES (NULL, '${req.body.id_user}', '${req.body.title}', CURRENT_TIMESTAMP,'${req.body.texte}', '${imageUrl}', 0, 0, "", "", '${req.body.username}')`
+    db.query(`INSERT INTO posts VALUES (NULL, '${req.body.id_user}', '${req.body.title}', CURRENT_TIMESTAMP,'${req.body.texte}', '${imageUrl}', 0, 0, "0", "0", '${req.body.username}')`
       , (error, result) => {
       if (error) {
           return res.status(400).json(
@@ -31,8 +31,9 @@ exports.newPost = (req, res, next) => {
 
 // Modifier un post. 
 exports.modifyOnePost = (req, res, next) => {
-    console.log(req.body)
-    console.log(req.params.id[1])
+    let postId = req.params.id
+    postId= postId.substring(1)
+    console.log(postId)
     if (req.body.file) {  // si j'ai un fichier image dans la requete
         imageUrl = `${req.protocol}://${req.get("host")}/images/${req.body.file.filename}`;  // req.protocol renvoie le http ou https,  req.get ('host') => donne le host de notre serveur (ici localhost 3001 en réel racine de notre serveur) ensuite dossier images et le nom du fichi
         console.log("je suis la ! ")
@@ -45,7 +46,7 @@ exports.modifyOnePost = (req, res, next) => {
 
     db.query(`UPDATE posts 
     SET titre = '${req.body.title}', texte = '${req.body.texte}', image_url = '${imageUrl}' 
-    WHERE id = ${req.params.id[1]}`, 
+    WHERE id = ${postId}`, 
     (error, result) => {
         console.log("juste après avoir enregistrer")
 
@@ -62,8 +63,9 @@ exports.modifyOnePost = (req, res, next) => {
 
 // supression d'un post. 
 exports.deleteOnePost = (req, res, next) => {
-    console.log(req.params.id[1])
-  db.query(`DELETE FROM posts WHERE id = ${req.params.id[1]}`, (error, result) => {
+    let postId = req.params.id
+    postId= postId.substring(1)
+  db.query(`DELETE FROM posts WHERE id = ${postId}`, (error, result) => {
       if (error) {
         console.log("erreure")
           return res.status(400).json({
@@ -120,10 +122,12 @@ exports.getAllPost = (req, res, next) => {
 // gestion des likes.
 
   exports.like = (req, res, next) => {
-    console.log(req.body)
+
    let userId = (req.body.userId).toString();
-   console.log(userId)
-    db.query(`SELECT * FROM posts  WHERE id = ${req.params.id[1]}`,   
+   let postId = req.params.id
+   postId= postId.substring(1)
+
+    db.query(`SELECT * FROM posts  WHERE id = ${postId}`,   
     (error, result) => {
       let post = result[0]
       let usersLiked = post.users_liked;
@@ -132,24 +136,18 @@ exports.getAllPost = (req, res, next) => {
       let arrayUsersDisLiked = usersDisLiked.split(',')
       let likes = post.likes
       let dislikes = post.dislikes
-      console.log(arrayUsersLiked)
-      console.log(arrayUsersDisLiked)
-
       let cond1 = !arrayUsersLiked.includes(userId)
-      console.log(cond1)
       let cond2 = !arrayUsersDisLiked.includes(userId)
-      console.log(cond2)
 
-
-        if (cond1 && cond2) {    // utilisateur like pour la première fois
+        if (cond1 && cond2) {                    // utilisateur like pour la première fois
             likes +=1
             arrayUsersLiked.push(userId);
             usersLiked = arrayUsersLiked.toString();
             db.query(`UPDATE posts 
                 SET likes = '${likes}', users_liked = '${usersLiked}'
-                WHERE id = ${req.params.id[1]}`, 
+                WHERE id = ${postId}`, 
                 (error, result) => {
-                    console.log("je viens d'enregistrer en un")
+                    console.log("je viens d'enregistrer en un like")
                     if (error) {
                         return res.status(400).json({
                             error
@@ -157,26 +155,24 @@ exports.getAllPost = (req, res, next) => {
                     }
                     return res.status(200).json({
                         message: 'like ajouté !'
-
                     });
                 });
         }
-        if (cond1 && !cond2) {   // utilisateur like alors qu' il avait déjà disliker
+
+        if (cond1 && !cond2) {                   // utilisateur like alors qu' il avait déjà disliker
             likes +=1
             dislikes -=1 
-            console.log(dislikes)
             arrayUsersLiked.push(userId);
             usersLiked = arrayUsersLiked.toString();
             let index = arrayUsersDisLiked.indexOf(userId)
             arrayUsersDisLiked.splice(index, 1)
-            console.log(arrayUsersDisLiked)
             usersDisLiked = arrayUsersDisLiked.toString();
 
             db.query(`UPDATE posts 
                 SET likes = '${likes}',  users_liked = '${usersLiked}', dislikes= '${dislikes}', users_disliked = '${usersDisLiked}'
-                WHERE id = ${req.params.id[1]}`, 
+                WHERE id = ${postId}`, 
                 (error, result) => {
-                    console.log("je viens d'enregistrer en deux")
+                    console.log("je viens d'enregistrer en deux like")
                     if (error) {
                         return res.status(400).json({
                             error
@@ -191,15 +187,14 @@ exports.getAllPost = (req, res, next) => {
     })}
   
 
-    
   
 // gestion des dislikes.
 
 exports.dislike = (req, res, next) => {            
-    console.log(req.body)
    let userId = (req.body.userId).toString();
-   console.log(userId)
-    db.query(`SELECT * FROM posts  WHERE id = ${req.params.id[1]}`,   
+   let postId = req.params.id
+   postId= postId.substring(1)
+    db.query(`SELECT * FROM posts  WHERE id = ${postId}`,   
     (error, result) => {
       let post = result[0]
       let usersLiked = post.users_liked;
@@ -208,14 +203,8 @@ exports.dislike = (req, res, next) => {
       let arrayUsersDisLiked = usersDisLiked.split(',')
       let likes = post.likes
       let dislikes = post.dislikes
-      console.log(arrayUsersLiked)
-      console.log(arrayUsersDisLiked)
-
       let cond1 = !arrayUsersLiked.includes(userId)
-      console.log(cond1)
       let cond2 = !arrayUsersDisLiked.includes(userId)
-      console.log(cond2)
-
 
         if (cond1 && cond2) {                // utilisateur dislike pour la première fois
             dislikes +=1
@@ -223,7 +212,7 @@ exports.dislike = (req, res, next) => {
             usersDisLiked = arrayUsersDisLiked.toString();
             db.query(`UPDATE posts 
                 SET dislikes = '${dislikes}', users_disliked = '${usersDisLiked}'
-                WHERE id = ${req.params.id[1]}`, 
+                WHERE id = ${postId}`, 
                 (error, result) => {
                     console.log("je viens d'enregistrer en un dislike")
                     if (error) {
@@ -240,17 +229,15 @@ exports.dislike = (req, res, next) => {
         if (!cond1 && cond2) {          // utilisateur dislike alors qu'il avait liker auparavant
             likes -=1
             dislikes +=1 
-            console.log(dislikes)
             arrayUsersDisLiked.push(userId);
-            usersDisLiked = arrayUsersDisLiked.toString();
+            usersDisLiked = arrayUsersDisLiked.toString()
             let index = arrayUsersLiked.indexOf(userId)
             arrayUsersLiked.splice(index, 1)
-            console.log(arrayUsersLiked)
-            usersDisLiked = arrayUsersLiked.toString();
-
+            usersLiked = arrayUsersLiked.toString()
+          
             db.query(`UPDATE posts 
                 SET likes = '${likes}',  users_liked = '${usersLiked}', dislikes= '${dislikes}', users_disliked = '${usersDisLiked}'
-                WHERE id = ${req.params.id[1]}`, 
+                WHERE id = ${postId}`, 
                 (error, result) => {
                     console.log("je viens d'enregistrer en deux dislike")
                     if (error) {

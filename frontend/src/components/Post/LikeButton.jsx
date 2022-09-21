@@ -11,10 +11,10 @@ export default function LikeButton (props) {
   const id = post.id
   const authDatas  = useContext(AuthContext); 
   const userID = authDatas.userId 
-  const reRender = props.reRender
-  const setReRender = props.setReRender 
-  console.log("je suis dans like")
-  console.log(userID)
+  const toogleRender = authDatas.toogleRender  
+  const setToogleRender = authDatas.setToogleRender 
+  const token = authDatas.token;
+
 
   async function liker () {
       try{
@@ -25,7 +25,7 @@ export default function LikeButton (props) {
           method: "PUT",
           body: JSON.stringify({  userId : userID } ),
           headers: {"Content-Type": "application/json",
-                    "Authorization":  "????",
+                    "Authorization":  'Bearer ' + token,
         }})
     
         if (!response.ok) {
@@ -35,7 +35,7 @@ export default function LikeButton (props) {
         } else{
           const result = await response.json()
           console.log(result.message)
-          setReRender(!reRender)
+          setToogleRender(! toogleRender)
           } 
       } 
       catch(err){

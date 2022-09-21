@@ -7,18 +7,18 @@ const postCtrl = require('../controllers/post');
 
 //Posts
 
-router.post('/',  multer, postCtrl.newPost);     
+router.post('/', auth,  multer, postCtrl.newPost);     
 router.put('/:id', postCtrl.modifyOnePost);
-router.delete('/:id',  postCtrl.deleteOnePost); 
+router.delete('/:id', auth, postCtrl.deleteOnePost); 
 
 
 
-router.get('/', postCtrl.getAllPost);  
+router.get('/',auth, postCtrl.getAllPost);  
 router.get('/user:id/posts', auth, postCtrl.getUserPosts);
 router.get('/:id',auth,  postCtrl.getOnePost);       
 
-router.put('/:id/like', postCtrl.like); 
-router.put('/:id/dislike', postCtrl.dislike); 
+router.put('/:id/like', auth, postCtrl.like); 
+router.put('/:id/dislike', auth, postCtrl.dislike); 
 
 
 module.exports = router;
