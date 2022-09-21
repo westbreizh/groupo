@@ -2,12 +2,10 @@ import {AuthContext} from '../../Utils/context/index'
 import { useState, useContext, useEffect } from 'react'
 import "./styles.css";
 import PostBox from './PostBox';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 export default function  ListPosts() {
 
   const  authDatas  = useContext(AuthContext);        //  branchement  sur le contexte global d 'authentification  
-  const token = authDatas.token;
   const toogleRender = authDatas.toogleRender 
   const [postsArray, setPostsArray] = useState([])
  

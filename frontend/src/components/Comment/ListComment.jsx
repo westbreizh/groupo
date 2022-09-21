@@ -1,71 +1,78 @@
-import { useForm } from "react-hook-form"            
-import { useContext,useState} from 'react'
 import {AuthContext} from '../../Utils/context/index'
-import { Input, IconButton, Button } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import NotesIcon from '@mui/icons-material/Notes';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import Box from '@mui/material/Box'; 
-//import "./styles.css";
+import { useState, useContext, useEffect } from 'react'
+import NotesIcon from '@mui/icons-material/Notes'
+import CommentBox from './CommentBox'
+import Box from '@mui/material/Box'
+import { Input, IconButton, Button } from '@mui/material'
+import "./styles.css";
 
 
+export default function  ListPosts() {
 
-
-export default function  ListComment (props) {
-
-  const [isCommentPostBoxOpen, setIsCommentPostBoxOpen] = useState(false) ;
-  const  authDatas  = useContext(AuthContext); 
-  const userId = authDatas.userId  
-  const toogleEffectRender = authDatas.toogleEffectRender  
-  const setToogleEffectRender = authDatas.setToogleEffectRender 
-  //const Token = authDatas.token;
-  const { register,setError, formState: { errors }, handleSubmit } = useForm({      
-           mode: 'onTouched'});
-  const id = props.id
-
-  const onSubmit = async function (data) {            
+  const  authDatas  = useContext(AuthContext);        //  branchement  sur le contexte global d 'authentification  
+  const toogleRender = authDatas.toogleRender 
+  const [commentArray, setCommentArray] = useState([])
+ 
+  useEffect(() => {
+    async function fetchArrayComment()  {            // logique de l'appel de l'API de creation d'enregistrement du backend et du traitement de la réponse
+      try{
+        const response = await fetch(`http://localhost:3001/api/comments`, {
+          mode: "cors",
+          method: "GET",
+          headers: {"Content-Type": "application/json",
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+        }})
     
-    try{
-      const response = await fetch(`http://localhost:3001/api/comments/:${id}`, {
-        mode: "cors",
-        method: "POST",
-        body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0]}),
-        headers: {"Content-Type": "application/json",
-                  "Authorization":  "????",
-      }})
-  
-      if (!response.ok) {
-        const result = await response.json()
-        console.log(result)
-        throw new Error(`${response.status}. ${result}`)
-      } else{
-        const result = await response.json()
-        setIsCommentPostBoxOpen (! isCommentPostBoxOpen)
-        setToogleEffectRender(! toogleEffectRender)
-        console.log(result.message)} 
-    } 
-    catch(err){
-      const errorMessage = err.toString();
-      setError("validation", { type:"manual", message: errorMessage} )
+        if (!response.ok) {
+          const result = await response.json()
+          throw new Error(`${response.status}. ${result}`)
+        } else{
+
+          const result = await response.json()
+          setCommentArray (result.reverse())
+          } 
+        } 
+
+        catch(err){
+          const errorMessage = err.toString();
+          console.log(errorMessage);
+        } 
     }
-  }
-   
-  
-    return (   
+    fetchArrayComment()
+  }, [toogleRender])
 
-       <Box>
-           <span>2</span>
-          <IconButton > 
+
+    return (
+
+      <Box>
+
+        { !isCommentListOpen ? 
+
+          <IconButton onClick={() => setIsCommentPostBoxOpen (! isCommentPostBoxOpen)} > 
+
           <NotesIcon color="secondary" sx={{ fontSize: 30 }}  /> 
-          </IconButton> :
 
+          </IconButton> 
+          
+          
+          
+          
+          :
+          
 
-          </Box>
-      
+        
+          commentArray.map((comment) => (
+
+            <CommentBox key={comment.id} post = {comment} />
+          ))
+        }
+      </Box>
     )
 }
 
+        
+    
 
 
 
-   
+
