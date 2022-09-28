@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import CommentBox from './CommentBox'
-
-export default function  ListPosts( props) {
+export default function  NumberComments( props) {
   
-  const [commentArray, setCommentArray] = useState([])
+  const [numberComments, setNumberComments] = useState("0")
+
   const id = props.id
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export default function  ListPosts( props) {
         } else{
 
           const result = await response.json()
-          setCommentArray (result.reverse())
+          setNumberComments (result.length)
           } 
         } 
 
@@ -32,15 +31,14 @@ export default function  ListPosts( props) {
         } 
     }
     fetchArrayComment()
-  },[id] )
+  }, [id])
 
 
       return (
-
-            commentArray.map((comment) => (
-              <CommentBox key={comment.id} comment = {comment} />  
-            )) 
-      )
+                <span> {numberComments}</span>
+ 
+            )
+      
  }
      
 

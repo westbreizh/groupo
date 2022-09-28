@@ -65,6 +65,57 @@ exports.login = (req, res, next) => {
 )}
 
 
+  // obtenir un user via l'id 
+  exports.getOneUser = (req, res, next) => {
+    let userId = req.params.id
+    userId= userId.substring(1)
+    db.query(`SELECT * FROM users   WHERE id = ${userId}`, 
+              (error, result) => {
+      if (error) {
+            return res.status(400).json({
+                error
+            });
+        }
+        return res.status(200).json(
+            result);
+    });
+  };
+
+
+// Modifier un post. 
+exports.modifyOnePost = (req, res, next) => {
+    let postId = req.params.id
+    postId= postId.substring(1)
+    console.log(postId)
+    if (req.body.file) {  // si j'ai un fichier image dans la requete
+        imageUrl = `${req.protocol}://${req.get("host")}/images/${req.body.file.filename}`;  // req.protocol renvoie le http ou https,  req.get ('host') => donne le host de notre serveur (ici localhost 3001 en réel racine de notre serveur) ensuite dossier images et le nom du fichi
+        console.log("je suis la ! ")
+        console.log(imageUrl)
+    }
+    else {
+        imageUrl = req.body.imageUrl; 
+        console.log("je suis ici")
+    }
+
+    db.query(`UPDATE posts 
+    SET titre = '${req.body.title}', texte = '${req.body.texte}', image_url = '${imageUrl}' 
+    WHERE id = ${postId}`, 
+    (error, result) => {
+        console.log("juste après avoir enregistrer")
+
+        if (error) {
+            return res.status(400).json({
+                error
+            });
+        }
+        return res.status(200).json({
+        message: 'Votre post à été modifié !'
+    })});
+    };
+  
+
+
+
 // suprresion utilisateur de la DB
 exports.deleteUser = (req, res, next) => {
   db.query(`DELETE FROM users WHERE id = ${req.params.id}`, 

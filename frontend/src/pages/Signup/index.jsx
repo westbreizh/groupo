@@ -7,7 +7,7 @@ import { Input, InputAdornment, IconButton } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Box from '@mui/material/Box'; 
-
+import AlertUserCreated from "../../components/Dialog/AlertUserCreated";
 
 
 export default function  SignUp() {
@@ -39,6 +39,7 @@ export default function  SignUp() {
     
         let result = await response.json();
         alert(result.message);
+        <AlertUserCreated />
         navigate("/login");
       }
     }

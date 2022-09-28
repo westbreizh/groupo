@@ -2,7 +2,7 @@
 import {AuthContext} from '../../Utils/context/index'
 import { useContext, useState } from 'react'
 import Box from '@mui/material/Box'
-import DeletePostButton from '../Post/DeletePostButton'
+import DeleteCommentButton from './DeleteCommentButton'
 import "./styles.css";
 
 export default function  CommentBox(props) {
@@ -14,10 +14,10 @@ export default function  CommentBox(props) {
   const linuxTime =Date.parse(comment.date)
   const dateTime = new Date(linuxTime)
   const dateFrench= dateTime.toLocaleDateString("fr")
-
+  
     return (
 
-      <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#111b4c', position: 'relative', }}> 
+      <Box  sx={{ backgroundColor:"#59c5ac", border: '2px solid white', borderRadius: '15px', width: '90%', mx: 'auto', mt: '15px', position: 'relative', }}> 
           
           <p> {comment.texte}</p>
 
@@ -26,8 +26,8 @@ export default function  CommentBox(props) {
             {userId=== comment.id_user || isAdmin === "y" ? 
               <Box sx={ { display: 'flex', justifyContent: "space-between"   }}  >
 
-              <DeletePostButton id = {comment.id}/>
-                  </Box> :
+              <DeleteCommentButton id = {comment.id}/>
+          </Box> :
                     ""
                 }
           </Box>

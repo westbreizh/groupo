@@ -18,34 +18,43 @@ exports.newComment = (req, res, next) => {
     });
   };
   
+  // obtenir tous les commentaires d'un post
+  exports.getAllComments = (req, res, next) => {
 
-  //supprimer un commentaire. 
-  exports.deleteComment = (req, res, next) => {
     let postId = req.params.id
     postId= postId.substring(1)
-      db.query(`DELETE FROM comments WHERE comments.id = ${postId}`, (error, result) => {
+    db.query(`SELECT * FROM comments WHERE id_post = ${postId}`, (error, result) => {
+        if (error) {
+            return res.status(400).json({
+                message: 'erreur lors du chargemnt des publications!'
+            });
+        }
+        return res.status(200).json(result);
+    });
+  };
+
+
+
+
+
+
+  //supprimer un commentaire. 
+  exports.deleteOneComment = (req, res, next) => {
+    let postId = req.params.id
+    postId= postId.substring(1)
+      db.query(`DELETE FROM comments WHERE id = ${postId}`, (error, result) => {
           if (error) {
               return res.status(400).json({
                   error
               });
           }
-          return res.status(200).json(result);
-      });
+          return res.status(200).json({
+
+            message: 'Votre comment à été supprimer !'
+          });
+        })  
     };
   
+
   
-  // obtenir les commentaires d'un post ou d'un utilisateur
-  exports.getAllComments = (req, res, next) => {
-    let postId = req.params.id
-    postId= postId.substring(1)
-    db.query(`SELECT users.id, users.username, comments.id,comments.texte, comments.id_user FROM users INNER JOIN comments ON users.id = comments.id_user WHERE comments.id_post = ${postId} `,
-        (error, result, field) => {
-            if (error) {
-                return res.status(400).json({
-                    error
-                });
-            }
-            return res.status(200).json(result);
-        });
-  };
-  
+

@@ -6,20 +6,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function AlertDialog(props) {
-  const open = props.open
-  const setOpen = props.setOpen
+export default function AlertDelete(props) {
+  const openAlert = props.openAlert
+  const setOpenAlert = props.setOpenAlert
   const setSupr = props.setSupr
   
   const handleClose = () => {
-    setOpen(false);
+    setOpenAlert(false);
   };
 
   return (
     <div>
 
       <Dialog
-        open={open}
+        open={openAlert}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -35,7 +35,7 @@ export default function AlertDialog(props) {
         <DialogActions>
           <Button onClick={handleClose}>Annuler</Button>
 
-          <Button onClick={() => {setOpen(false); setSupr(true)}} autoFocus>
+          <Button onClick={() => {setOpenAlert(false); setSupr(true)}} autoFocus>
             Supprimer
           </Button>
         </DialogActions>

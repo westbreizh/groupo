@@ -11,6 +11,18 @@
   display: inline-flex;
   margin-left: 2%;
 }
+.box_comment{
+  background: '#111b4c';
+}
+
+.userData{
+  color: white;
+  font-size: larger;
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
+
 
 
 body {

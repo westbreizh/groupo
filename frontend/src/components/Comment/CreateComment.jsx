@@ -11,7 +11,7 @@ import "./styles.css";
 
 export default function  CreateComment(props) {
 
-  const [isCommentPostBoxOpen, setIsCommentPostBoxOpen] = useState(false) ;
+  const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false) ;
   const  authDatas  = useContext(AuthContext); 
   const username = authDatas.username
   const userId = authDatas.userId  
@@ -38,7 +38,7 @@ export default function  CreateComment(props) {
         throw new Error(`${response.status}. ${result}`)
       } else{
         const result = await response.json()
-        setIsCommentPostBoxOpen (! isCommentPostBoxOpen)
+        setIsCommentBoxOpen (! isCommentBoxOpen )
         console.log(result.message)
         setToogleRender(! toogleRender)
         } 
@@ -54,17 +54,18 @@ export default function  CreateComment(props) {
 
        <Box>
 
-        { !isCommentPostBoxOpen ? 
+        { !isCommentBoxOpen ? 
 
-          <IconButton onClick={() => setIsCommentPostBoxOpen (! isCommentPostBoxOpen)} > 
-          <DriveFileRenameOutlineIcon color="secondary" sx={{ fontSize: 30, marginLeft: "15px" }}  /> 
+          <IconButton onClick={() => setIsCommentBoxOpen (! isCommentBoxOpen )}  sx={{textAlign: "center", margin:"auto"}} > 
+          <DriveFileRenameOutlineIcon color="secondary" sx={{ fontSize: 40, textAlign: "center", margin:"auto"}}  /> 
+          <span>  Commenter</span>
           </IconButton> :
           
-          <Box  sx={{  border: '2px solid white', borderRadius: '35px', width: '100%',
-          mx: 'auto', mt: '50px', bgcolor: '#323e78', position: 'absolute',top: "50%",left: '0%', zIndex: 'modal',}}>
+          <Box  sx={{  border: '2px solid white', borderRadius: '25px', width: '90%',
+          mx: 'auto', mt: '50px', bgcolor: '#323e78', }}>
 
             <Box  sx={{ maxWidth: '58px', marginX: "left"}}>
-              <IconButton  color= "secondary" onClick={() =>  setIsCommentPostBoxOpen (! isCommentPostBoxOpen )} >
+              <IconButton  color= "secondary" onClick={() =>  setIsCommentBoxOpen (! isCommentBoxOpen )} >
                 <CloseIcon  />
               </IconButton>
             </Box>
@@ -73,7 +74,7 @@ export default function  CreateComment(props) {
 
             <form onSubmit={handleSubmit(onSubmit)}>
 
-            <h3> Commentaire </h3>
+            <h3> Votre commentaire </h3>
 
               <TextareaAutosize  type="text" {...register("texte", { maxLength: 250 }) } placeholder="votre message de 25O caratères max" className="textaera" />
               {errors.texte && <p className="error">{"le message est trop long, vous n'êtes pas écrivain !"}</p>}

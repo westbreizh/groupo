@@ -5,9 +5,11 @@ import {IconButton } from '@mui/material';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined'
 import AlertDelete from '../Dialog/AlertDelete'
 
-export default function DeletePostButton (props) {            
+export default function DeleteCommentButton (props) {            
 
   const id  = props.id ; 
+  console.log("mon id comment en dessous")
+  console.log(id)
   const  authDatas  = useContext(AuthContext);
   const token = authDatas.token; 
   const toogleRender = authDatas.toogleRender  
@@ -19,8 +21,7 @@ export default function DeletePostButton (props) {
   async function del () {
     if (supr){
       try{
-        console.log("je rentre dans ma fonction")
-        const response = await fetch(`http://localhost:3001/api/posts/:${id}`, {
+        const response = await fetch(`http://localhost:3001/api/comments/:${id}`, {
           mode: "cors",
           method: "DELETE",
           headers: {"Content-Type": "application/json",
@@ -53,7 +54,7 @@ export default function DeletePostButton (props) {
   return (
   <div>
     <AlertDelete openAlert = {openAlert} setOpenAlert = {setOpenAlert} setSupr = {setSupr}/>
-    <IconButton onClick={() => {  setOpenAlert(true) }} > 
+    <IconButton onClick={() => { setOpenAlert(true) }} > 
     <DeleteOutlined color="secondary" sx={{ fontSize: 30 }}  /> 
     </IconButton>
   </div>
