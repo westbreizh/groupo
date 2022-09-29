@@ -16,7 +16,6 @@ export default function  CreatePost(props) {
   const username = authDatas.username
   const toogleRender = authDatas.toogleRender  
   const setToogleRender = authDatas.setToogleRender 
-  const token = authDatas.token;
   const { register,setError, formState: { errors }, handleSubmit } = useForm({      
            mode: 'onTouched'});
   const onSubmit = async function (data) {            
@@ -27,7 +26,7 @@ export default function  CreatePost(props) {
         method: "POST",
         body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0], username: username}),
         headers: {"Content-Type": "application/json",
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
       }})
   
       if (!response.ok) {

@@ -12,11 +12,11 @@ import "./styles.css";
 export default function  CreateComment(props) {
 
   const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false) ;
+  const reRender= props.reRender
+  const setReRender = props.setReRender
   const  authDatas  = useContext(AuthContext); 
   const username = authDatas.username
   const userId = authDatas.userId  
-  const toogleRender = authDatas.toogleRender  
-  const setToogleRender = authDatas.setToogleRender 
   const { register,setError, formState: { errors }, handleSubmit } = useForm({      
            mode: 'onTouched'});
   const id = props.id
@@ -34,13 +34,14 @@ export default function  CreateComment(props) {
   
       if (!response.ok) {
         const result = await response.json()
-        console.log(result)
+
         throw new Error(`${response.status}. ${result}`)
       } else{
         const result = await response.json()
         setIsCommentBoxOpen (! isCommentBoxOpen )
-        console.log(result.message)
-        setToogleRender(! toogleRender)
+        console.log(reRender)
+        setReRender(!reRender)
+        console.log(reRender)
         } 
     } 
     catch(err){

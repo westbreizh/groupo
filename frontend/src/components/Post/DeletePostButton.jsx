@@ -9,7 +9,6 @@ export default function DeletePostButton (props) {
 
   const id  = props.id ; 
   const  authDatas  = useContext(AuthContext);
-  const token = authDatas.token; 
   const toogleRender = authDatas.toogleRender  
   const setToogleRender = authDatas.setToogleRender 
   const [openAlert, setOpenAlert] = useState(false);
@@ -24,7 +23,7 @@ export default function DeletePostButton (props) {
           mode: "cors",
           method: "DELETE",
           headers: {"Content-Type": "application/json",
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
         }})
     
         if (!response.ok) {

@@ -9,23 +9,24 @@ export default function LikeButton (props) {
   const post = props.post
   let likes = post.likes
   const id = post.id
+
+
   const authDatas  = useContext(AuthContext); 
   const userID = authDatas.userId 
   const toogleRender = authDatas.toogleRender  
   const setToogleRender = authDatas.setToogleRender 
-  const token = authDatas.token;
+  const isDisabled  = authDatas.isDisabled 
 
 
   async function liker () {
       try{
-        console.log(likes)
-        console.log("je rentre dans ma fonction")
         const response = await fetch(`http://localhost:3001/api/posts/:${id}/like`, {
           mode: "cors",
           method: "PUT",
           body: JSON.stringify({  userId : userID } ),
           headers: {"Content-Type": "application/json",
-                    "Authorization":  'Bearer ' + token,
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+
         }})
     
         if (!response.ok) {
@@ -48,7 +49,7 @@ export default function LikeButton (props) {
 
   return (
 
-  <IconButton onClick={() => { liker(id) }} > 
+  <IconButton  disabled={isDisabled}  onClick={() => { liker(id) }} > 
   <span> {likes}</span>
   <ThumbUpAltIcon color="secondary" sx={{ fontSize: 30 }}  /> 
   </IconButton>

@@ -1,22 +1,17 @@
-import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup'
-import validationSchemaLogin from '../../Utils/validation-shema/validationShemaLogin'
 import { useContext, useState, useEffect } from 'react'
 import {AuthContext} from '../../Utils/context/index'
-import { useNavigate } from "react-router-dom";
-import { Input, InputAdornment, IconButton } from '@mui/material'
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Box from '@mui/material/Box'; 
-
-
+import ModifyUser from "./ModifyUser";
+import DeleteUserButton from './DeleteUserButton';
 
 
 export default function  UserProfil() {
 
       const  authDatas  = useContext(AuthContext)
       const id = authDatas.userId  
-      const [user, setUser] = useState("") 
+      const [user, setUser] = useState("")
+      const [reRender, setReRender] = useState("false") 
+ 
 
       useEffect(() => {
             async function fetchGetOneUser()  {           
@@ -46,7 +41,7 @@ export default function  UserProfil() {
             } 
             }
             fetchGetOneUser()
-      },[id] )
+      },[id, reRender] )
           
 
   return (
@@ -56,14 +51,16 @@ export default function  UserProfil() {
         <h1> Votre profil</h1>
       
         <div className="userData"> Nom d'utilisateur : {user.username} </div>
-        <div className="userData"> Nom :  </div>
-        <div className="userData"> Prénom :  </div>
-        <div className="userData"> Description :  </div>
+        <div className="userData"> Nom : {user.forName} </div>
+        <div className="userData"> Prénom : {user.lastName} </div>
+        <div className="userData"> email : {user.email} </div>
+        <div className="userData"> Description : {user.texte} </div>
 
-
-
-
-      
+        <Box sx={{display: "flex", justifyContent: "space-between"   }}>
+            <ModifyUser user = {user} reRender = {reRender} setReRender = {setReRender} />
+            <DeleteUserButton user = {user} />
+        </Box>
+        
       </Box>
           
   )  

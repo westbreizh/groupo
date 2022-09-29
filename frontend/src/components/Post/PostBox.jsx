@@ -18,15 +18,14 @@ export default function  PostBox(props) {
 
   const post = props.post
   const  authDatas  = useContext(AuthContext)
-  const reRender = props.reRender
-  const setReRender = props.setReRender 
+  const isDisabled  = authDatas.isDisabled 
   const userId = authDatas.userId  
   const isAdmin = authDatas.isAdmin
   const linuxTime =Date.parse(post.date)
   const dateTime = new Date(linuxTime)
   const dateFrench= dateTime.toLocaleDateString("fr")
   const [isCommentListOpen, setIsCommentListOpen] = useState(false) 
- 
+  const [reRender, setReRender] = useState("false") 
 
 
     return (
@@ -59,7 +58,7 @@ export default function  PostBox(props) {
                 {!isCommentListOpen? 
                 
 
-                  <IconButton onClick={() => setIsCommentListOpen (! isCommentListOpen)} > 
+                  <IconButton  disabled={isDisabled}  onClick={() => setIsCommentListOpen (! isCommentListOpen)} > 
                     <NumberComments id = {post.id}/>
                     <NotesIcon color="secondary" sx={{ fontSize: 30 }}  /> 
                   </IconButton> 
@@ -73,8 +72,8 @@ export default function  PostBox(props) {
                     <CloseIcon  />
                     </IconButton>
 
-                    <CreateComment id = {post.id} />
-                    <ListComment id = {post.id}/>
+                    <CreateComment id = {post.id} reRender = {reRender} setReRender = {setReRender} />
+                    <ListComment id = {post.id} reRender = {reRender} setReRender = {setReRender}/>
                     
                     <IconButton  color= "secondary" onClick={() =>  setIsCommentListOpen (! isCommentListOpen )} >
                     <CloseIcon  />

@@ -12,19 +12,19 @@ export default function DisLikeButton (props) {
   const userID = authDatas.userId 
   const toogleRender = authDatas.toogleRender  
   const setToogleRender = authDatas.setToogleRender 
-  const token = authDatas.token;
+  const isDisabled  = authDatas.isDisabled 
+ console.log(isDisabled)
 
 
   async function disliker () {
       try{
-        console.log(dislikes)
-        console.log("je rentre dans ma fonction")
         const response = await fetch(`http://localhost:3001/api/posts/:${id}/dislike`, {
           mode: "cors",
           method: "PUT",
           body: JSON.stringify({  userId : userID } ),
           headers: {"Content-Type": "application/json",
-                    "Authorization": 'Bearer ' + token,
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+
         }})
     
         if (!response.ok) {
@@ -48,7 +48,7 @@ export default function DisLikeButton (props) {
 
   return (
 
-  <IconButton onClick={() => { disliker(id) }} > 
+  <IconButton  disabled={isDisabled} onClick={() => { disliker(id) }} > 
   <span> {dislikes}</span>
   <ThumbDownAltIcon color="secondary" sx={{ fontSize: 30 }}  /> 
   </IconButton>

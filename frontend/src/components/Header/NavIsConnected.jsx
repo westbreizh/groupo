@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Avatar from '@mui/material/Avatar';
+import {AuthContext} from '../../Utils/context/index'
+import { useContext } from 'react'
 
 export default function NavIsConnected(props) {
 
+  const { setIsConnected, setIsDisabled } = useContext(AuthContext);  
   const isAdmin = props.isAdmin;
   const navigate = useNavigate();
   return (
@@ -31,9 +34,12 @@ export default function NavIsConnected(props) {
       <Avatar sx={{ bgcolor: 'blueviolet' }}>compte</Avatar>
       </IconButton>
 
-      <Link href="/login"> 
+      <IconButton onClick={() => {  
+       setIsConnected(false)
+       setIsDisabled(true)
+        navigate("/") }} > 
       < LogoutIcon color = "secondary"  fontSize='large'/> 
-      </Link>
+      </IconButton>
       
     </Box>
   );

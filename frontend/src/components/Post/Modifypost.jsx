@@ -33,8 +33,7 @@ const onSubmit = async function (data) {
         method: "PUT",
         body: JSON.stringify({  title: data.title, texte: data.texte, file: data.file[0], imageUrl: image_url }),
         headers: {"Content-Type": "application/json",
-                  "Authorization":  'Bearer ' + token
-      }})
+        Authorization: 'Bearer ' + localStorage.getItem('token'),      }})
   
       if (!response.ok) {
         const result = await response.json()

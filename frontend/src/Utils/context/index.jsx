@@ -4,14 +4,15 @@ export const AuthContext = createContext();
 
 export const AuthProvider = (props) => {      
     const [isConnected, setIsConnected] = useState(false)
-    const [token, setToken ] = useState('')
     const [userId, setUserId ] = useState('')
     const [isAdmin, setIsAdmin ] = useState()
     const [username, setUsername ] = useState()
     const [toogleRender, setToogleRender ] = useState(false)
+    const [isDisabled, setIsDisabled] = useState(true)
+
 
     return (
-        <AuthContext.Provider value={{ token, setToken, userId, setUserId, 
+        <AuthContext.Provider value={{  userId, setUserId, isDisabled, setIsDisabled,
         isConnected, setIsConnected, isAdmin, setIsAdmin, toogleRender, setToogleRender, username, setUsername }}>
             {props.children} 
         </AuthContext.Provider>

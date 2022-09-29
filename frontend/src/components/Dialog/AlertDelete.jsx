@@ -10,7 +10,7 @@ export default function AlertDelete(props) {
   const openAlert = props.openAlert
   const setOpenAlert = props.setOpenAlert
   const setSupr = props.setSupr
-  
+  const message = props.message
   const handleClose = () => {
     setOpenAlert(false);
   };
@@ -29,7 +29,7 @@ export default function AlertDelete(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Souhaitez vous vraiment supprimer la publication ?
+            Souhaitez vous vraiment supprimer {message} ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

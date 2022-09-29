@@ -4,7 +4,8 @@ import CommentBox from './CommentBox'
 export default function  ListPosts( props) {
   
   const [commentArray, setCommentArray] = useState([])
-  const id = props.id
+  const reRender = props.reRender
+  const id = props.id  // id du post
 
   useEffect(() => {
     async function fetchArrayComment()  {            
@@ -32,13 +33,13 @@ export default function  ListPosts( props) {
         } 
     }
     fetchArrayComment()
-  },[id] )
+  },[id, reRender] )
 
 
       return (
 
             commentArray.map((comment) => (
-              <CommentBox key={comment.id} comment = {comment} />  
+              <CommentBox key={comment.id} comment = {comment}  />  
             )) 
       )
  }

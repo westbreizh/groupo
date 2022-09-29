@@ -11,7 +11,6 @@ export default function DeleteCommentButton (props) {
   console.log("mon id comment en dessous")
   console.log(id)
   const  authDatas  = useContext(AuthContext);
-  const token = authDatas.token; 
   const toogleRender = authDatas.toogleRender  
   const setToogleRender = authDatas.setToogleRender 
   const [openAlert, setOpenAlert] = useState(false);
@@ -25,7 +24,7 @@ export default function DeleteCommentButton (props) {
           mode: "cors",
           method: "DELETE",
           headers: {"Content-Type": "application/json",
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
         }})
     
         if (!response.ok) {

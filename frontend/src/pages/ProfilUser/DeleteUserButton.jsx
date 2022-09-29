@@ -1,30 +1,30 @@
-//import { useState, useContext, useEffect } from 'react'
-import { useContext, useState} from 'react'
 import {AuthContext} from '../../Utils/context/index'
+import { useContext, useState } from 'react'
 import {IconButton } from '@mui/material';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined'
-import AlertDelete from '../Dialog/AlertDelete'
+import AlertDelete from '../../components/Dialog/AlertDelete'
+import { useNavigate } from "react-router-dom";
 
-export default function DeletePostButton (props) {            
 
-  const id  = props.id ; 
-  const  authDatas  = useContext(AuthContext);
-  const token = authDatas.token; 
-  const toogleRender = authDatas.toogleRender  
-  const setToogleRender = authDatas.setToogleRender 
+export default function DeleteUserButton (props) {            
+  const user = props.user
+  const id = user.id
   const [openAlert, setOpenAlert] = useState(false);
   const [supr, setSupr] = useState(false);
+  const navigate = useNavigate();
+  const { setIsConnected, setIsDisabled } = useContext(AuthContext);  
+
 
 
   async function del () {
     if (supr){
       try{
         console.log("je rentre dans ma fonction")
-        const response = await fetch(`http://localhost:3001/api/posts/:${id}`, {
+        const response = await fetch(`http://localhost:3001/api/user/:${id}`, {
           mode: "cors",
           method: "DELETE",
           headers: {"Content-Type": "application/json",
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
         }})
     
         if (!response.ok) {
@@ -35,10 +35,10 @@ export default function DeletePostButton (props) {
           const result = await response.json()
           console.log(result.message)
           setSupr(!supr)
+          setIsConnected(false)
+          setIsDisabled(true)
+          navigate("/");
 
-          console.log(toogleRender)
-          setToogleRender(!toogleRender)
-          console.log(toogleRender)
           } 
       } 
       catch(err){
@@ -52,10 +52,12 @@ export default function DeletePostButton (props) {
 
   return (
   <div>
-    <AlertDelete openAlert = {openAlert} setOpenAlert = {setOpenAlert} setSupr = {setSupr}/>
+    <AlertDelete message = {"votre compte"} openAlert = {openAlert} setOpenAlert = {setOpenAlert} setSupr = {setSupr}/>
+
     <IconButton onClick={() => {  setOpenAlert(true) }} > 
     <DeleteOutlined color="secondary" sx={{ fontSize: 30 }}  /> 
     </IconButton>
+
   </div>
   )
 
