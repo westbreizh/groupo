@@ -89,8 +89,8 @@ export default function  PostBox(props) {
               </Box>
 
               <Box>
-                  <LikeButton post = {post} reRender = {reRender} setReRender = {setReRender} />
-                  <DisLikeButton post = {post} reRender = {reRender} setReRender = {setReRender} />
+                  <LikeButton id = {post.id} likes = {post.likes}   />
+                  <DisLikeButton id = {post.id} dislikes = {post.dislikes} />
               </Box>
               
             </Box>

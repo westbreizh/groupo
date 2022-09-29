@@ -5,17 +5,11 @@ import {IconButton } from '@mui/material';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 
 
-export default function LikeButton (props) {            
-  const post = props.post
-  let likes = post.likes
-  const id = post.id
+export default function LikeButton (props) {
+              
+  const {likes, id} = props
+  const {toogleRender, setToogleRender, isDisabled, userId} = useContext(AuthContext);  
 
-
-  const authDatas  = useContext(AuthContext); 
-  const userID = authDatas.userId 
-  const toogleRender = authDatas.toogleRender  
-  const setToogleRender = authDatas.setToogleRender 
-  const isDisabled  = authDatas.isDisabled 
 
 
   async function liker () {
@@ -23,7 +17,7 @@ export default function LikeButton (props) {
         const response = await fetch(`http://localhost:3001/api/posts/:${id}/like`, {
           mode: "cors",
           method: "PUT",
-          body: JSON.stringify({  userId : userID } ),
+          body: JSON.stringify({  userId : userId } ),
           headers: {"Content-Type": "application/json",
           Authorization: 'Bearer ' + localStorage.getItem('token'),
 

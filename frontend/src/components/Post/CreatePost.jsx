@@ -8,16 +8,14 @@ import Box from '@mui/material/Box';
 import "./styles.css";
 
 
-export default function  CreatePost(props) {
+export default function  CreatePost() {
 
+  const { toogleRender, setToogleRender, username, userId   } = useContext(AuthContext);  
   const [isCreatePostBoxOpen, setIsCreatePostBoxOpen] = useState(false) ;
-  const  authDatas  = useContext(AuthContext); 
-  const userId = authDatas.userId  
-  const username = authDatas.username
-  const toogleRender = authDatas.toogleRender  
-  const setToogleRender = authDatas.setToogleRender 
   const { register,setError, formState: { errors }, handleSubmit } = useForm({      
            mode: 'onTouched'});
+
+
   const onSubmit = async function (data) {            
     
     try{
@@ -36,11 +34,10 @@ export default function  CreatePost(props) {
       } else{
         const result = await response.json()
         setIsCreatePostBoxOpen (! isCreatePostBoxOpen)
-        console.log("creation post")
-
-        setToogleRender(! toogleRender)
         console.log(toogleRender)
-        console.log(result.message)} 
+        setToogleRender(!toogleRender)
+        console.log(result)
+        console.log(toogleRender)} 
     } 
     catch(err){
       const errorMessage = err.toString();

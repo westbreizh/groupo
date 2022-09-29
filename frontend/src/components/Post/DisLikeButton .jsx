@@ -4,16 +4,10 @@ import {AuthContext} from '../../Utils/context/index'
 import {IconButton } from '@mui/material';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt'
 
-export default function DisLikeButton (props) {            
-  const post = props.post
-  let dislikes = post.dislikes
-  const id = post.id
-  const authDatas  = useContext(AuthContext); 
-  const userID = authDatas.userId 
-  const toogleRender = authDatas.toogleRender  
-  const setToogleRender = authDatas.setToogleRender 
-  const isDisabled  = authDatas.isDisabled 
- console.log(isDisabled)
+export default function DisLikeButton (props) {   
+  
+  const {dislikes, id} = props
+  const {toogleRender, setToogleRender, isDisabled, userId} = useContext(AuthContext);  
 
 
   async function disliker () {
@@ -21,7 +15,7 @@ export default function DisLikeButton (props) {
         const response = await fetch(`http://localhost:3001/api/posts/:${id}/dislike`, {
           mode: "cors",
           method: "PUT",
-          body: JSON.stringify({  userId : userID } ),
+          body: JSON.stringify({  userId : userId } ),
           headers: {"Content-Type": "application/json",
           Authorization: 'Bearer ' + localStorage.getItem('token'),
 
@@ -35,7 +29,6 @@ export default function DisLikeButton (props) {
           const result = await response.json()
           console.log(result.message)
           setToogleRender(! toogleRender)
-
           } 
       } 
       catch(err){

@@ -1,16 +1,16 @@
 import {AuthContext} from '../../Utils/context/index'
 import { useState, useContext, useEffect } from 'react'
-import "./styles.css";
 import PostBox from './PostBox';
+import "./styles.css";
+
 
 export default function  ListPosts() {
 
-  const  authDatas  = useContext(AuthContext);        //  branchement  sur le contexte global d 'authentification  
-  const toogleRender = authDatas.toogleRender 
+  const { toogleRender } = useContext(AuthContext);  
   const [postsArray, setPostsArray] = useState([])
  
   useEffect(() => {
-    async function fetchArrayPosts()  {            // logique de l'appel de l'API de creation d'enregistrement du backend et du traitement de la réponse
+    async function fetchArrayPosts()  {           
       try{
         const response = await fetch(`http://localhost:3001/api/posts`, {
           mode: "cors",
