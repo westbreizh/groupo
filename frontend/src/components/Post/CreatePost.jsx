@@ -10,7 +10,7 @@ import "./styles.css";
 
 export default function  CreatePost() {
 
-  const { toogleRender, setToogleRender, username, userId   } = useContext(AuthContext);  
+  const { toogleRender, setToogleRender, userId   } = useContext(AuthContext);  
   const [isCreatePostBoxOpen, setIsCreatePostBoxOpen] = useState(false) ;
   const { register,setError, formState: { errors }, handleSubmit } = useForm({      
            mode: 'onTouched'});
@@ -22,7 +22,7 @@ export default function  CreatePost() {
       const response = await fetch(`http://localhost:3001/api/posts`, {
         mode: "cors",
         method: "POST",
-        body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0], username: username}),
+        body: JSON.stringify({  id_user: userId, title: data.title, texte: data.texte, file: data.file[0]}),
         headers: {"Content-Type": "application/json",
         Authorization: 'Bearer ' + localStorage.getItem('token'),
       }})

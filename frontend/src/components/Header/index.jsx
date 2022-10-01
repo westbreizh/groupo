@@ -5,11 +5,9 @@ import NavIsConnected from './NavIsConnected'
 import NavIsDisconnected from './NavIsDisconnected'
 
 
-
 function Header() {
 
-  const { isConnected } = useContext(AuthContext); 
-  const { isAdmin } = useContext(AuthContext);
+  const { isConnected, isAdmin} = useContext(AuthContext); 
 
   if (isConnected) {
     return (
@@ -37,6 +35,5 @@ function Header() {
 
   }
 
-  
   
   export default Header;

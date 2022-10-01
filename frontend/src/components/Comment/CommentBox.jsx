@@ -1,16 +1,13 @@
-
 import {AuthContext} from '../../Utils/context/index'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import Box from '@mui/material/Box'
 import DeleteCommentButton from './DeleteCommentButton'
 import "./styles.css";
 
 export default function  CommentBox(props) {
 
-  const comment = props.comment
-  const  authDatas  = useContext(AuthContext)
-  const userId = authDatas.userId  
-  const isAdmin = authDatas.isAdmin
+  const { reRender, setReRender, comment} = props
+  const { isAdmin, userId} = useContext(AuthContext);  
   const linuxTime =Date.parse(comment.date)
   const dateTime = new Date(linuxTime)
   const dateFrench= dateTime.toLocaleDateString("fr")
@@ -26,7 +23,9 @@ export default function  CommentBox(props) {
             {userId=== comment.id_user || isAdmin === "y" ? 
               <Box sx={ { display: 'flex', justifyContent: "space-between"   }}  >
 
-              <DeleteCommentButton id = {comment.id}/>
+                    
+              <DeleteCommentButton id = {comment.id} reRender = {reRender} setReRender = {setReRender}/>
+
           </Box> :
                     ""
                 }

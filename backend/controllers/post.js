@@ -13,7 +13,7 @@ exports.newPost = (req, res, next) => {
 
     }
     
-    db.query(`INSERT INTO posts VALUES (NULL, '${req.body.id_user}', '${req.body.title}', CURRENT_TIMESTAMP,'${req.body.texte}', '${imageUrl}', 0, 0, "0", "0", '${req.body.username}')`
+    db.query(`INSERT INTO posts VALUES (NULL, '${req.body.id_user}', '${req.body.title}', CURRENT_TIMESTAMP,'${req.body.texte}', '${imageUrl}', 0, 0, "0", "0")`
       , (error, result) => {
       if (error) {
           return res.status(400).json(

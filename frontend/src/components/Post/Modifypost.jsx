@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form"           
-import { Input, IconButton, Button } from '@mui/material';
+import { Input, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box';
@@ -10,19 +10,11 @@ import {AuthContext} from '../../Utils/context/index'
 
 
 export default function  ModifyPost(props) {
-const post = props.post
-const id = post.id
-const titre = post.titre
-const texte = post.texte
-const image_url = post.image_url
-const { register,setError, formState: { errors }, handleSubmit } = useForm({       
+  const { id, titre, texte, image_url} = props
+  const { toogleRender, setToogleRender } = useContext(AuthContext)
+  const [isModifyPostBoxOpen, setIsModifyPostBoxOpen] = useState(false) ;  
+  const { register,setError, formState: { errors }, handleSubmit } = useForm({       
            mode: 'onTouched'});
-const  authDatas  = useContext(AuthContext);             
-const toogleRender = authDatas.toogleRender  
-const setToogleRender = authDatas.setToogleRender 
-const token = authDatas.token;
-const [isModifyPostBoxOpen, setIsModifyPostBoxOpen] = useState(false) ;
-
 
 
 const onSubmit = async function (data) {          
@@ -33,18 +25,14 @@ const onSubmit = async function (data) {
         method: "PUT",
         body: JSON.stringify({  title: data.title, texte: data.texte, file: data.file[0], imageUrl: image_url }),
         headers: {"Content-Type": "application/json",
-        Authorization: 'Bearer ' + localStorage.getItem('token'),      }})
+        Authorization: 'Bearer ' + localStorage.getItem('token') }})
   
       if (!response.ok) {
         const result = await response.json()
         throw new Error(`${response.status}. ${result}`)
       } else{
         const result = await response.json()
-        console.log("modify")
-        console.log(toogleRender)
         setToogleRender(!toogleRender)
-        console.log(toogleRender)
-
         console.log(result.message)
         setIsModifyPostBoxOpen(!isModifyPostBoxOpen)
         } 

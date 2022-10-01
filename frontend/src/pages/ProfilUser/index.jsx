@@ -8,7 +8,7 @@ import DeleteUserButton from './DeleteUserButton';
 export default function  UserProfil() {
 
       const  authDatas  = useContext(AuthContext)
-      const id = authDatas.userId  
+      const id = authDatas.userIdPost  
       const [user, setUser] = useState("")
       const [reRender, setReRender] = useState("false") 
  
@@ -48,7 +48,7 @@ export default function  UserProfil() {
 
       <Box  sx={{  border: '2px solid white', borderRadius: '15px', maxWidth: '580px', mx: 'auto', mt: '50px', bgcolor: '#111b4c' }}> 
 
-        <h1> Votre profil</h1>
+        <h1> {user.username} </h1>
       
         <div className="userData"> Nom d'utilisateur : {user.username} </div>
         <div className="userData"> Nom : {user.forName} </div>

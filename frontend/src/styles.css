@@ -40,6 +40,9 @@ body {
     border-bottom: 1px solid #4f6294;
   }
 
+  h5{
+    color : violet
+  }
 
  h3, h6{
   font-weight: 400;
@@ -48,6 +51,15 @@ body {
   margin: 0px;
   margin-bottom: 15px;
   text-align: center;
+}
+.avatarUsename{
+  color: white;
+  text-transform: lowercase;
+
+  font-size: 10px;
+  font-weight: 100;
+  letter-spacing: 2px;
+  margin-left: 3px;
 }
 
 p {

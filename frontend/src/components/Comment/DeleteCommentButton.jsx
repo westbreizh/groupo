@@ -1,18 +1,12 @@
 //import { useState, useContext, useEffect } from 'react'
-import { useContext, useState} from 'react'
-import {AuthContext} from '../../Utils/context/index'
+import { useState} from 'react'
 import {IconButton } from '@mui/material';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined'
 import AlertDelete from '../Dialog/AlertDelete'
 
 export default function DeleteCommentButton (props) {            
 
-  const id  = props.id ; 
-  console.log("mon id comment en dessous")
-  console.log(id)
-  const  authDatas  = useContext(AuthContext);
-  const toogleRender = authDatas.toogleRender  
-  const setToogleRender = authDatas.setToogleRender 
+  const { reRender, setReRender, id} = props
   const [openAlert, setOpenAlert] = useState(false);
   const [supr, setSupr] = useState(false);
 
@@ -35,10 +29,7 @@ export default function DeleteCommentButton (props) {
           const result = await response.json()
           console.log(result.message)
           setSupr(!supr)
-
-          console.log(toogleRender)
-          setToogleRender(!toogleRender)
-          console.log(toogleRender)
+          setReRender(!reRender)
           } 
       } 
       catch(err){
@@ -52,7 +43,7 @@ export default function DeleteCommentButton (props) {
 
   return (
   <div>
-    <AlertDelete openAlert = {openAlert} setOpenAlert = {setOpenAlert} setSupr = {setSupr}/>
+    <AlertDelete openAlert = {openAlert} setOpenAlert = {setOpenAlert} setSupr = {setSupr} message = {"votre commentaire"}/>
     <IconButton onClick={() => { setOpenAlert(true) }} > 
     <DeleteOutlined color="secondary" sx={{ fontSize: 30 }}  /> 
     </IconButton>

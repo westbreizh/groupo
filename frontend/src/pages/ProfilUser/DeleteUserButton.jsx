@@ -19,7 +19,6 @@ export default function DeleteUserButton (props) {
   async function del () {
     if (supr){
       try{
-        console.log("je rentre dans ma fonction")
         const response = await fetch(`http://localhost:3001/api/user/:${id}`, {
           mode: "cors",
           method: "DELETE",
@@ -29,7 +28,6 @@ export default function DeleteUserButton (props) {
     
         if (!response.ok) {
           const result = await response.json()
-          console.log(result)
           throw new Error(`${response.status}. ${result}`)
         } else{
           const result = await response.json()
@@ -53,7 +51,6 @@ export default function DeleteUserButton (props) {
   return (
   <div>
     <AlertDelete message = {"votre compte"} openAlert = {openAlert} setOpenAlert = {setOpenAlert} setSupr = {setSupr}/>
-
     <IconButton onClick={() => {  setOpenAlert(true) }} > 
     <DeleteOutlined color="secondary" sx={{ fontSize: 30 }}  /> 
     </IconButton>

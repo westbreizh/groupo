@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 
 export default function  Login() {
 
-  const { setUserId, setIsAdmin, setIsConnected, setUsername, setIsDisabled, isDisabled } = useContext(AuthContext);  
+  const { setUserId, setIsAdmin, setIsConnected, setUsername, setIsDisabled, isDisabled, setImage_urlAvatar } = useContext(AuthContext);  
   const { register,setError, formState: { errors }, handleSubmit } = useForm({
         resolver: yupResolver(validationSchemaLogin),
          mode: 'onTouched'
@@ -47,6 +47,7 @@ export default function  Login() {
       setIsConnected(true)
       setIsDisabled(!isDisabled)
       setUsername(result.username)
+      setImage_urlAvatar(result.image_urlAvatar)
       localStorage.setItem('token', result.token)
       localStorage.setItem('id', result.id)
       navigate("/");

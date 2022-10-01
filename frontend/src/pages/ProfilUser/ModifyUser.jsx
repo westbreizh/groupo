@@ -1,25 +1,17 @@
 import { useForm } from "react-hook-form"           
-import { Input, IconButton, Button, InputAdornment} from '@mui/material';
+import { Input, IconButton, InputAdornment} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Box from '@mui/material/Box';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import validationSchemaUser from '../../Utils/validation-shema/validationShemaUser'
+//import validationSchemaUser from '../../Utils/validation-shema/validationShemaUser'
 import { useState } from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
 export default function  ModifyUser(props) {
-  const user = props.user
-  const reRender= props.reRender
-  const setReRender = props.setReRender
-  const id = user.id
-  const username = user.username
-  const lastName = user.lastName
-  const forName = user.forName
-  const email = user.email
-  const texte = user.texte
+  const { reRender, setReRender, user} = props
   const [showPassword, setShowPassWord] = useState(false) ;
   const { register,setError, formState: { errors }, handleSubmit } = useForm({       
             mode: 'onTouched'});
@@ -36,7 +28,7 @@ export default function  ModifyUser(props) {
   const onSubmit = async function (data) {          
 
     try{
-        const response = await fetch(`http://localhost:3001/api/user/:${id}`, {
+        const response = await fetch(`http://localhost:3001/api/user/:${user.id}`, {
         mode: "cors",
         method: "PUT",
         body: JSON.stringify({  username: data.username, lastName: data.lastName, forName: data.forName, email: data.email, texte: data.texte}),
@@ -51,6 +43,7 @@ export default function  ModifyUser(props) {
         const result = await response.json()
         setIsModifyBoxOpen(!isModifyBoxOpen)
         setReRender(!reRender)
+        console.log(result)
         } 
     } 
     catch(err){
@@ -85,18 +78,18 @@ export default function  ModifyUser(props) {
             <h1> Modifier votre profil </h1>
       
             <label> Nom d'utilisateur : </label>
-              <Input  type = "text" {...register("username")} defaultValue = {username} className="input" />
+              <Input  type = "text" {...register("username")} defaultValue = {user.username} className="input" />
               <p className="error">{errors.userName?.message}</p>
             <label> Nom  : </label>
-            <Input type="text" {...register("forName",{ maxLength: 20 }) } defaultValue = {forName}  className="input" />
+            <Input type="text" {...register("forName",{ maxLength: 20 }) } defaultValue = {user.forName}  className="input" />
             {errors.forName && <p className="error">{"Votre nom ne doit pas dépasser 20 caractères !"}</p>}
             
             <label> Prenom : </label>
-            <Input type="text" {...register("lastName",{ maxLength: 20 }) } defaultValue = {lastName}  className="input" />
+            <Input type="text" {...register("lastName",{ maxLength: 20 }) } defaultValue = {user.lastName}  className="input" />
             {errors.lastName && <p className="error">{"Votre prénom ne doit pas dépasser 20 caractères ! !"}</p>}
 
             <label> Email : </label>
-            <Input type="email" {...register("email",{ required: true }) } defaultValue = {email}  className="input" />
+            <Input type="email" {...register("email",{ required: true }) } defaultValue = {user.email}  className="input" />
             <p className="error">{errors.email?.message}</p>
 
 
@@ -122,10 +115,8 @@ export default function  ModifyUser(props) {
 
 
             <label> Description : </label>
-            <TextareaAutosize  type="text" {...register("texte", { maxLength: 250 }) } defaultValue={texte} className="input" />
+            <TextareaAutosize  type="text" {...register("texte", { maxLength: 250 }) } defaultValue={user.texte} className="input" />
             {errors.texte && <p>{"le message est trop long, vous n'êtes pas écrivain !"}</p>}
-
-
 
 
             <button  type="submit"  > Modifier </button>

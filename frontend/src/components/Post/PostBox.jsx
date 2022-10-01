@@ -1,7 +1,8 @@
-
 import {AuthContext} from '../../Utils/context/index'
 import { useContext, useState } from 'react'
-import { Input, IconButton, Button } from '@mui/material'
+import { IconButton } from '@mui/material'
+import NotesIcon from '@mui/icons-material/Notes'
+import CloseIcon from '@mui/icons-material/Close'
 import Box from '@mui/material/Box'
 import ModifyPost  from './Modifypost'
 import DeletePostButton from './DeletePostButton'
@@ -9,23 +10,20 @@ import CreateComment from '../Comment/CreateComment'
 import ListComment from '../Comment/ListComment'
 import LikeButton from './LikeButton'
 import DisLikeButton from './DisLikeButton '
-import NotesIcon from '@mui/icons-material/Notes'
-import CloseIcon from '@mui/icons-material/Close';
-import "./styles.css";
 import NumberComments from '../Comment/NumberComments'
+import AvatarPostBox from '../Avatar/AvatarPostBox'
+import "./styles.css"
+
 
 export default function  PostBox(props) {
 
   const post = props.post
-  const  authDatas  = useContext(AuthContext)
-  const isDisabled  = authDatas.isDisabled 
-  const userId = authDatas.userId  
-  const isAdmin = authDatas.isAdmin
+  const {isAdmin, isDisabled, userId} = useContext(AuthContext);  
+  const [isCommentListOpen, setIsCommentListOpen] = useState(false) 
+  const [reRender, setReRender] = useState("false") 
   const linuxTime =Date.parse(post.date)
   const dateTime = new Date(linuxTime)
   const dateFrench= dateTime.toLocaleDateString("fr")
-  const [isCommentListOpen, setIsCommentListOpen] = useState(false) 
-  const [reRender, setReRender] = useState("false") 
 
 
     return (
@@ -35,18 +33,17 @@ export default function  PostBox(props) {
             
             <h1> {post.titre}</h1>
 
-            {post.image_url !==""? <img src={post.image_url} alt= "oiseau" className='img' crossOrigin="anonymous" /> : ""} 
+            {post.image_url !==""? <img src={post.image_url} alt= "l'images de la publication " className='img' crossOrigin="anonymous" /> : ""} 
 
             <p> {post.texte}</p>
 
-
-        
+  
 
             <Box sx={ { display: 'flex', justifyContent: "space-between", alignItems:"center"   }}  >
 
               {userId=== post.id_user || isAdmin === "y" ? 
                 <Box sx={ { display: 'flex', justifyContent: "space-between"   }}  >
-                <ModifyPost post= {post} />
+                <ModifyPost id={post.id} titre={post.titre} texte={post.texte} image_url= {post.image_url} />
                 <DeletePostButton id = {post.id}/>
                     </Box> :
                       ""
@@ -84,18 +81,18 @@ export default function  PostBox(props) {
                   </Box> 
                 }
 
-
-
               </Box>
 
               <Box>
-                  <LikeButton id = {post.id} likes = {post.likes}   />
+                  <LikeButton id = {post.id} likes = {post.likes}  />
                   <DisLikeButton id = {post.id} dislikes = {post.dislikes} />
               </Box>
               
             </Box>
-            <h6>   {post.username} le {dateFrench} </h6>
-
+            <Box sx={ { display: 'flex', justifyContent: "center", alignItems:"baseline"   }}  >
+            <AvatarPostBox userId= {post.id_user} />
+             <h6>  le {dateFrench} </h6>
+            </Box>
       </Box>
           
       )
